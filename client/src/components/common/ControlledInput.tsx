@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormGroup, Label, Input } from 'reactstrap';
 import { Controller } from 'react-hook-form';
 import { InputType } from 'reactstrap/types/lib/Input';
@@ -16,7 +15,8 @@ export default function ControlledInput ({ label, type, control }: IControlledIn
         <Controller
             name={label.toLowerCase()}
             control={control}
-            render={({ field }) => <Input defaultValue='' type={type} id={label} placeholder={label} {...field} />}
+            defaultValue={''}
+            render={({ field }) => <Input type={type} id={label} placeholder={label} {...field} />}
         />
         <Label for={label}>{label}</Label>
     </FormGroup>
