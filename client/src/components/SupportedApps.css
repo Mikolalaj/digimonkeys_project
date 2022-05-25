@@ -1,0 +1,32 @@
+.supported-sites {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.supported-sites h5, .supported-sites p {
+    margin: 10px 0;
+}
+
+.supported-sites p {
+    color: var(--bs-gray);
+    font-style: italic;
+}
+
+.supported-sites .icons {
+    display: flex;
+    flex-direction: row;
+    font-size: 40px;
+    gap: 20px;
+}
+
+.supported-sites .icons svg {
+    cursor: pointer;
+}
