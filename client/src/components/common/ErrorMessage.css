@@ -1,0 +1,22 @@
+.error-message {
+    position: relative;
+    top: -13px;
+    color: #f44336;
+    margin-bottom: 0;
+}
+
+.error-message.sm {
+    font-size: 13px;
+}
+
+.error-message.md {
+    font-size: 19px;
+}
+
+.error-message.lg {
+    font-size: 32px;
+}
+
+.error-message:after {
+    content: '\200b';
+}
