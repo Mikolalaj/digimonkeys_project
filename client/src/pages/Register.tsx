@@ -10,20 +10,22 @@ import ErrorMessage from '../components/common/ErrorMessage';
 import './Login.css'
 
 type Inputs = {
+    firstName: string,
     username: string,
     password: string,
+    repeatPassword: string
 };
 
-export default function Login (): JSX.Element {
+export default function Register () {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const authContext = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const { handleSubmit, control, formState: { errors } } = useForm<Inputs>({'defaultValues': { username: '', password: '' }});
+    const { handleSubmit, control, getValues, formState: { errors } } = useForm<Inputs>();
 
-    async function onClickLogin(formData: Inputs) {
+    async function onClickRegister(formData: Inputs) {
         try {
-            const { data } = await publicFetch.post('users/auth', formData);
+            const { data } = await publicFetch.post('users/signup', formData);
             authContext.setAuthState(data);
             navigate('/dashboard');
         } catch (error) {
@@ -39,9 +41,17 @@ export default function Login (): JSX.Element {
     return (
     authContext.isAuthenticated() ? <Navigate to='/dashboard' /> :
     <div className='login-box'>
-        <Form inline className='form' onSubmit={handleSubmit(onClickLogin)}>
-            <h2>Log In</h2>
+        <Form inline className='form' onSubmit={handleSubmit(onClickRegister)}>
+            <h2>Register</h2>
             <ErrorMessage message={errorMessage} size='md'/>
+            <ControlledInput
+                label='First Name'
+                name='firstName'
+                type='text'
+                rules={{ required: { value:true, message: 'First Name is required' } }}
+                control={control}
+                errors={errors}
+            />
             <ControlledInput
                 label='Username'
                 name='username'
@@ -54,12 +64,22 @@ export default function Login (): JSX.Element {
                 label='Password'
                 name='password'
                 type='password'
-                rules={{ required: { value:true, message: 'Password is required' } }}
+                rules={{ required: { value: true, message: 'Password is required' },
+                         minLength: { value: 8, message: 'Password must be at least 8 characters' } }}
                 control={control}
                 errors={errors}
             />
-            <p>Don't have an account yet? Register <u>here</u></p>
-            <Button className='button'>Submit</Button>
+            <ControlledInput
+                label='Repeat Password'
+                name='repeatPassword'
+                type='password'
+                rules={{ required: { value:true, message: 'Password is required' },
+                         validate: (value) => value === getValues('password') || 'Passwords do not match' }}
+                control={control}
+                errors={errors}
+            />
+            <p>Have an account already? Sign in <u>here</u></p>
+            <Button className='button'>Register</Button>
         </Form>
     </div>
     );

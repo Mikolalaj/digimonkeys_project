@@ -1,8 +1,8 @@
 import './App.css';
-import * as React from 'react';
 import { useContext } from 'react';
 
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Topbar from './components/Topbar';
 import { AuthContext, AuthProvider } from './context/AuthContext';
@@ -19,7 +19,7 @@ function MyRoutes(): JSX.Element {
     return (
     <Routes>
         <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Login />} />
+        <Route path='/register' element={<Register />} />
         <Route path='/' element={<AuthenticatedRoute />} >
             <Route path='/' element={<><Topbar /><Navigate to={'/dashboard'} /></>} />
             {/* <Route path='/' element={<Navigate to={'/dashboard'} />}/> */}
