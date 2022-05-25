@@ -75,11 +75,11 @@ router.post('/auth', async (req, res) => {
   
 });
 
-async function addUser({ user_id, firstName, lastName, email, username, password, admin }) {
+async function addUser({ user_id, firstName, username, password }) {
     try {
         const res = await pool.query(`
-        INSERT INTO users (user_id, first_name, last_name, username, password, email, admin)
-        VALUES ('${user_id}', '${firstName}', '${lastName}', '${username}', '${password}', '${email}', ${admin})`);
+        INSERT INTO users (user_id, first_name, username, password)
+        VALUES ('${user_id}', '${firstName}', '${username}', '${password}')`);
         return res.rowCount;
     } catch (error) {
         console.log(error);
@@ -89,19 +89,12 @@ async function addUser({ user_id, firstName, lastName, email, username, password
 
 router.post('/signup', async function(req, res) {
     try {
-        const { firstName, lastName, email, username, password } = req.body;
+        const { firstName, username, password } = req.body;
         const hashedPassword = await hashPassword(password);
         const uuid = uuidv4();
 
-        const availability = await checkUsernameEmailAvailability({username, email});
-
-        if (availability.email) {
-            return res
-                .status(400)
-                .json({ message: 'Ten email jest już zajęty.' });
-        }
-
-        if (availability.username) {
+        const availability = await checkUsernameAvailability(username);
+        if (availability) {
             return res
                 .status(400)
                 .json({ message: 'Ten login jest już zajęty.' });
@@ -110,11 +103,8 @@ router.post('/signup', async function(req, res) {
         const userData = {
             user_id: uuid,
             firstName: firstName,
-            lastName: lastName,
-            email: email.toLowerCase(),
             username: username.toLowerCase(),
-            password: hashedPassword,
-            admin: false
+            password: hashedPassword
         };
 
         const result = await addUser(userData);
@@ -126,10 +116,7 @@ router.post('/signup', async function(req, res) {
 
             const userInfo = {
                 firstName: userData.firstName,
-                lastName: userData.lastName,
-                email: userData.email,
                 username: userData.username,
-                admin: userData.admin
             };
 
             res.cookie('token', token, {
@@ -157,22 +144,14 @@ router.post('/signup', async function(req, res) {
     }
 });
 
-async function checkUsernameEmailAvailability({username, email}) {
+async function checkUsernameAvailability(username) {
     try {
         const res = await pool.query(`
-        SELECT
-            EXISTS(SELECT user_id FROM users WHERE username = '${username}') as username,
-            EXISTS(SELECT user_id FROM users WHERE email = '${email}') as email`);
-        return res.rows[0];
+        SELECT EXISTS(SELECT user_id FROM users WHERE username = '${username}') as username`);
+        return res.rows[0].username;
     } catch (error) {
         return error;
     }
 }
-
-router.get('/checkUsernameEmail/', function(req, res) {
-    userData = req.query;
-    checkUsernameEmailAvailability(userData)
-        .then(result => res.send(result));
-});
 
 module.exports = router;

@@ -9,8 +9,6 @@ var csrfProtection = csrf({ cookie: true });
 const { camelize } = require('./utils');
 
 var usersRouter = require('./routes/users');
-var productsRouter = require('./routes/products');
-var productsMeterRouter = require('./routes/meter');
 
 var app = express();
 
@@ -66,8 +64,7 @@ app.get('/api/csrf-token', async function(req, res) {
 app.use(attachUser);
 app.use(checkJwt);
 
-app.use('/api/products', productsRouter);
-app.use('/api/products/meter', productsMeterRouter);
+// app.use('/api/products', productsRouter);
 
 // change object keys to camelCase
 app.use(function(req, res) {
