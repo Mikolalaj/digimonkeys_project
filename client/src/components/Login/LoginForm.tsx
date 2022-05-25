@@ -57,7 +57,7 @@ export default function LoginForm () {
             errors={errors}
         />
         <p>Don't have an account yet? Register <TextLink href={'/register'}>here</TextLink></p>
-        <Button color='primary'>Submit</Button>
+        <Button color='primary'>Log in</Button>
     </Form>
     );
 }

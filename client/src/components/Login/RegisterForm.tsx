@@ -77,7 +77,7 @@ export default function RegisterForm () {
             errors={errors}
         />
         <p>Have an account already? Sign in <TextLink href={'/login'}>here</TextLink></p>
-        <Button className='button'>Register</Button>
+        <Button color='primary'>Register</Button>
     </Form>
     );
 }

@@ -5,7 +5,7 @@ import RegisterForm from '../components/Login/RegisterForm';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import './Login.css'
+import './SignIn.css'
 
 export default function Login (): JSX.Element {
     const authContext = useContext(AuthContext);
