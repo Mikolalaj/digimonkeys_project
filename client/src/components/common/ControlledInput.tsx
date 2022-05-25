@@ -1,7 +1,6 @@
-import { FormGroup, Label, Input } from 'reactstrap';
+import { FormGroup, FormFeedback, Label, Input } from 'reactstrap';
 import { Controller } from 'react-hook-form';
 import { InputType } from 'reactstrap/types/lib/Input';
-import ErrorMessage from './ErrorMessage';
 import { UseControllerProps } from 'react-hook-form';
 import './ControlledInput.css';
 
@@ -34,8 +33,10 @@ export default function ControlledInput ({ label, name, type, control, errors, r
             )}
         />
         <Label for={name}>{label}</Label>
+        <FormFeedback>
+            {errors[name]?.message}
+        </FormFeedback>
     </FormGroup>
-    <ErrorMessage message={errors[name]?.message} size='sm' />
     </>
     );
 }
