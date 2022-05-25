@@ -15,7 +15,6 @@ const AuthProvider = ({ children }) => {
     })
 
     function setAuthInfo({ token, expiresAt, userInfo }) {
-        
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
         localStorage.setItem('expiresAt', expiresAt);
         setAuthState({
@@ -26,7 +25,6 @@ const AuthProvider = ({ children }) => {
     }
 
     function logout() {
-        
         localStorage.removeItem('userInfo');
         localStorage.removeItem('expiresAt');
         setAuthState({
@@ -40,8 +38,8 @@ const AuthProvider = ({ children }) => {
         return new Date().getTime() / 1000 < authState.expiresAt;
     }
 
-    function isAdmin() {
-        return authState.userInfo.admin;
+    function getFirstName() {
+        return authState.userInfo.firstName;
     }
 
     return (
@@ -50,8 +48,8 @@ const AuthProvider = ({ children }) => {
                 authState,
                 setAuthState: authInfo => setAuthInfo(authInfo),
                 isAuthenticated,
-                isAdmin,
-                logout
+                logout,
+                getFirstName
             }}
         >
         { children }
