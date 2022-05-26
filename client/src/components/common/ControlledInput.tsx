@@ -1,4 +1,4 @@
-import { FormGroup, InputGroup, FormFeedback, Label, Input } from 'reactstrap';
+import { FormGroup, FormFeedback, Label, Input } from 'reactstrap';
 import { Controller, ControllerRenderProps } from 'react-hook-form';
 import { InputProps, InputType } from 'reactstrap/types/lib/Input';
 import { UseControllerProps } from 'react-hook-form';
@@ -42,38 +42,4 @@ function ControlledInput ({ label, name, type, control, errors, rules, ...inputP
     );
 }
 
-export interface IControlledInputButtonProps extends IControlledInputProps   {
-    button: React.ReactNode;
-}
-
-function ControlledInputButton({ label, name, type, control, errors, rules, button, ...inputProps }: IControlledInputButtonProps) {
-    return (
-    <FormGroup>
-        <InputGroup>
-            <Controller
-                name={name}
-                control={control}
-                defaultValue={''}
-                rules={rules}
-                render={({ field }) => (
-                    <Input
-                        invalid={!!errors[name]?.message}
-                        type={type}
-                        id={name}
-                        placeholder={label}
-                        {...field}
-                        {...inputProps}
-                    />
-                )}
-            />
-            {button}
-        </InputGroup>
-        <FormFeedback className={errors[name] && `d-block`}>
-            {errors[name]?.message}
-        </FormFeedback>
-    </FormGroup>
-    )
-}
-
 export default ControlledInput
-export { ControlledInputButton }

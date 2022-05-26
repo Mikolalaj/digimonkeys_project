@@ -1,0 +1,21 @@
+.video-link-input .input-group-text {
+    background-color: white;
+    border-left-color: transparent;
+}
+
+.video-link-input .input-group-text p {
+    display: inline;
+}
+
+.video-link-input .input-group-text svg {
+    color: var(--bs-gray-400);
+    font-size: 32px;
+    position: relative;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.video-link-input .input-group button {
+    padding: 0 25px;
+}
