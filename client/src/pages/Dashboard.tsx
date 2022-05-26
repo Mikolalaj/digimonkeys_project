@@ -43,7 +43,7 @@ export default function Dashboard () {
                 label='Video URL'
                 name='videoUrl'
                 type='text'
-                rules={{ required: { value:true, message: 'You need your video\'s URL!' } }}
+                rules={{ required: { value:true, message: 'We need your video\'s URL!' } }}
                 control={control}
                 errors={errors}
             />
