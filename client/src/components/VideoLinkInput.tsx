@@ -28,11 +28,11 @@ function ControlledLinkInput({ label, name, type, control, errors, rules, ...inp
                     />
                 )}
             />
-            <InputGroupText>
-                <Help />
-            </InputGroupText>
-            <InputGroupText>
+            <InputGroupText className={errors[name] && `error`}>
                 <HeartButton />
+            </InputGroupText>
+            <InputGroupText className={errors[name] && `error`}>
+                <Help />
             </InputGroupText>
             <Button color='primary'>Add</Button>
         </InputGroup>
