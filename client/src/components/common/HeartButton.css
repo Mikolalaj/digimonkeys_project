@@ -1,0 +1,45 @@
+.heart-button {
+    position: relative;
+    margin-bottom: 1rem;
+    height: 100%;
+    text-align: center;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.heart-button.liked {
+    animation: liked .4s ease;
+    color: #de3163;
+}
+
+.heart-button.unliked {
+    animation: unliked .3s ease;
+    color: var(--bs-gray-400);
+}
+
+@keyframes liked {
+    0% {
+      transform: scale(.8);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+}
+
+@keyframes unliked {
+    0% {
+      transform: rotate(18deg);
+    }
+    33% {
+      transform: rotate(-12deg);
+    }
+    66% {
+        transform: rotate(7deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+}
