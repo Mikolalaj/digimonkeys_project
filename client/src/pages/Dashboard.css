@@ -1,0 +1,17 @@
+.page-content {
+    margin: 0 auto;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.add-video {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.add-video-form {
+    margin-top: 50px;
+}
