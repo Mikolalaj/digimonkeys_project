@@ -1,6 +1,6 @@
 import { Col } from "reactstrap";
 import { MdPerson, MdThumbUp } from 'react-icons/md';
-import HeartButton from "./common/HeartButton";
+import HeartButton from "../common/HeartButton";
 import { useState } from "react";
 import './Video.scss'
 

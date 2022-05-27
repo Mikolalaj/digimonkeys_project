@@ -2,10 +2,10 @@ import { FormGroup, InputGroup, InputGroupText, FormFeedback, Input, Button } fr
 import { Controller } from 'react-hook-form';
 import { useState } from 'react';
 
-import HeartButton from './common/HeartButton';
-import Help from './Help';
-import { IControlledInputProps } from './common/ControlledInput';
-import './VideoLinkInput.css'
+import HeartButton from '../common/HeartButton';
+import Help from '../Help';
+import { IControlledInputProps } from '../common/ControlledInput';
+import './LinkInput.css'
 
 function ControlledLinkInput({ label, name, type, control, errors, rules, ...inputProps }: IControlledInputProps) {
     const [isLiked, setIsLiked] = useState(false);

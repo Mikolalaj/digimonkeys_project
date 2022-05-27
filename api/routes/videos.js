@@ -41,7 +41,6 @@ router.get('/', async function(req, res, next) {
 
         for (let i = 0; i < rows.length; i++) {
             let videoData = await getVideoData(rows[i].url);
-            // rows[i].video_data = videoData[0];
             rows[i] = {...rows[i], ...videoData[0]};
         }
         
@@ -61,7 +60,8 @@ router.get('/info', async function(req, res, next) {
     try {
         const { rows } = await pool.query(`
         SELECT
-            COUNT(*) as count
+            COUNT(*) as count,
+            COUNT(*) FILTER (where liked = true) as countLiked
         FROM videos
         WHERE user_id = '${sub}'`);
         

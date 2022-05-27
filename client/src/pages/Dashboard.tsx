@@ -2,8 +2,8 @@ import { useContext, useMemo } from 'react';
 import { Form } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 
-import VideoLinkInput from '../components/VideoLinkInput';
-import VideoListing from '../components/VideoListing';
+import LinkInput from '../components/Video/LinkInput';
+import Listing from '../components/Video/Listing';
 import { AuthContext } from '../context/AuthContext';
 import './Dashboard.css';
 
@@ -40,7 +40,7 @@ export default function Dashboard () {
         <h1>{greeting} {getFirstName()}!</h1>
         <Form className='add-video-form' inline onSubmit={handleSubmit(onClickAddVideo)}>
             <h3>Add your video here!</h3>
-            <VideoLinkInput
+            <LinkInput
                 label='Video URL'
                 name='videoUrl'
                 type='text'
@@ -49,7 +49,7 @@ export default function Dashboard () {
                 errors={errors}
             />
         </Form>
-        <VideoListing />
+        <Listing />
     </div>
     );
 }
