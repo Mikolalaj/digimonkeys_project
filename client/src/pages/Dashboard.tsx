@@ -3,6 +3,7 @@ import { Form } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 
 import VideoLinkInput from '../components/VideoLinkInput';
+import VideoListing from '../components/VideoListing';
 import { AuthContext } from '../context/AuthContext';
 import './Dashboard.css';
 
@@ -48,6 +49,7 @@ export default function Dashboard () {
                 errors={errors}
             />
         </Form>
+        <VideoListing />
     </div>
     );
 }

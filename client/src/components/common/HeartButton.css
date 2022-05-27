@@ -1,5 +1,4 @@
 .heart-button {
-    position: relative;
     height: 100%;
     text-align: center;
     font-size: inherit;
@@ -18,27 +17,27 @@
 
 @keyframes liked {
     0% {
-      transform: scale(.8);
+        transform: scale(.8);
     }
     50% {
-      transform: scale(1.1);
+        transform: scale(1.1);
     }
     100% {
-      transform: scale(1);
+        transform: scale(1);
     }
 }
 
 @keyframes unliked {
     0% {
-      transform: rotate(18deg);
+        transform: rotate(18deg);
     }
     33% {
-      transform: rotate(-12deg);
+        transform: rotate(-12deg);
     }
     66% {
         transform: rotate(7deg);
     }
     100% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
 }

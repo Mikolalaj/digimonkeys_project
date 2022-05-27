@@ -1,0 +1,54 @@
+.video-listing {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.listing-filters {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 70px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.listing-filters svg {
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.listing-filters .icon-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+.listing-filters .icon-button svg {
+    font-size: 25px;
+}
+
+.listing-filters .icon-button.remove-all,
+.listing-filters .icon-button.remove-all svg {
+    color: var(--bs-danger);
+}
+
+.listing-filters .icon-button.load-demo,
+.listing-filters .icon-button.load-demo svg {
+    color: var(--bs-success);
+}
+
+.listing-filters select {
+    width: auto;
+}
+
+.listing-filters .display {
+    display: flex;
+    gap: 10px;
+    color: var(--bs-gray-500);
+}
+
+.listing-filters .display svg.selected {
+    color: var(--bs-gray-600);
+}
