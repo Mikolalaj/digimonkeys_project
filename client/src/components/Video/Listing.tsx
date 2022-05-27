@@ -77,7 +77,7 @@ export default function Listing () {
         <ListingFilters sorting={sorting} liked={liked} onChangeSort={onChangeSort} onChangeLiked={onChangeLiked} />
         <Container>
             <Row>
-                {state.data.map((video: any) => <Video {...video} />)}
+                {state.data.map((video: any) => <Video key={video.id} {...video} />)}
             </Row>
         </Container>
         <Pagination onChangePage={onChangePage} page={page} pageCount={pageCount} />

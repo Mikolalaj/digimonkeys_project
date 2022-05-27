@@ -29,7 +29,6 @@ export default function Video ({thumbnail, title, viewCount, likeCount, addDate,
                 <div><MdPerson />{viewCount}</div>
                 <div><MdThumbUp />{likeCount}</div>
                 <HeartButton onClick={() => setIsFavourite(!isFavourite)} value={isFavourite} />
-
             </div>
             <p className='add-date'>{addDate}</p>
         </div>
