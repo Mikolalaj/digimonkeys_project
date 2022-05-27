@@ -1,4 +1,4 @@
-import { Input, Label, FormGroup, Container, Row, Col } from 'reactstrap';
+import { Input, Label, FormGroup, Container, Row, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { MdViewList, MdViewModule, MdDeleteForever, MdOutlineFileDownload } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 
@@ -10,18 +10,20 @@ export default function VideoListing () {
     const [sorting, setSorting] = useState<string>('asc');
     const [liked, setLiked] = useState<boolean>(false);
 
+    const [stateInfo] = useAPI('get', '/videos/info')
+
     const [state,,,setParams,, refresh] = useAPI('get', '/videos/', [], {
         sort: sorting,
         limit: 6,
         skip: 0,
         liked: liked
-    });
+    })
 
     useEffect(() => {
-        if (state.isSuccess) {
-            console.log(state.data);
+        if (stateInfo.isSuccess) {
+            console.log(stateInfo.data);
         }
-    }, [state])
+    }, [stateInfo])
 
     function onChangeSort(e: any) {
         setSorting(e.target.value);
@@ -71,21 +73,40 @@ export default function VideoListing () {
         <div className='listing'>
         <Container>
             <Row>
-                {state.data.map((video: any) => <Video
-                        liked={video.liked}
-                        key={video.id}
-                        thumbnail={video.videoData.thumbnail}
-                        title={video.videoData.title}
-                        viewCount={video.videoData.viewCount}
-                        likeCount={video.videoData.likeCount}
-                        addDate={video.addDate}
-                    />
-                )}
+                {state.data.map((video: any) => <Video {...video} />)}
             </Row>
         </Container>
         </div>
         <div className='pagination'>
-
+        <Pagination aria-label="Page navigation example">
+            <PaginationItem disabled>
+                <PaginationLink
+                href="#"
+                previous
+                />
+            </PaginationItem>
+            <PaginationItem active>
+                <PaginationLink href="#">
+                1
+                </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+                <PaginationLink href="#">
+                2
+                </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+                <PaginationLink href="#">
+                3
+                </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+                <PaginationLink
+                href="#"
+                next
+                />
+            </PaginationItem>
+        </Pagination>
         </div>
     </div>
     );

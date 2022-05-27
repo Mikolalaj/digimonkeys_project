@@ -41,11 +41,31 @@ router.get('/', async function(req, res, next) {
 
         for (let i = 0; i < rows.length; i++) {
             let videoData = await getVideoData(rows[i].url);
-            rows[i].video_data = videoData[0];
+            // rows[i].video_data = videoData[0];
+            rows[i] = {...rows[i], ...videoData[0]};
         }
         
         req.body = rows;
         next();
+    } catch (error) {
+        return res.status(500).json({ message: `Internal server error ${error}` });
+    }
+});
+
+router.get('/info', async function(req, res, next) {
+    const { sub } = req.user;
+    if (!sub) {
+        return res.status(401).json({ message: 'Authentication error' });
+    }
+
+    try {
+        const { rows } = await pool.query(`
+        SELECT
+            COUNT(*) as count
+        FROM videos
+        WHERE user_id = '${sub}'`);
+        
+        return res.status(200).json(rows[0]);
     } catch (error) {
         return res.status(500).json({ message: `Internal server error ${error}` });
     }
