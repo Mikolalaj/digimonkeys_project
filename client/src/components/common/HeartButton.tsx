@@ -1,18 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io';
 import './HeartButton.css';
 
 export interface IHeartButtonProps {
+    value: boolean;
+    onClick: () => void;
 }
 
-export default function HeartButton (props: IHeartButtonProps) {
-    const [isFavourite, setIsFavourite] = useState(false);
+export default function HeartButton ({ value, onClick }: IHeartButtonProps) {
+    const [isFavourite, setIsFavourite] = useState(value);
+
+    useEffect(() => {
+        setIsFavourite(value);
+    }, [value])
 
     return (
-    <div>
+    <div className='heart-button-wrapper'>
         {isFavourite ?
-            <IoMdHeart onClick={() => setIsFavourite(!isFavourite)} className='heart-button liked' /> :
-            <IoMdHeartEmpty onClick={() => setIsFavourite(!isFavourite)} className='heart-button unliked' />
+            <IoMdHeart onClick={onClick} className='heart-button liked' /> :
+            <IoMdHeartEmpty onClick={onClick} className='heart-button unliked' />
         }
     </div>
     );

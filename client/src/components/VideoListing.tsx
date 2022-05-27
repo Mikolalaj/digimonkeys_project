@@ -1,7 +1,9 @@
 import { Input, Label, FormGroup, Container, Row, Col } from 'reactstrap';
-import { MdViewList, MdViewModule, MdDeleteForever, MdOutlineFileDownload, MdPerson, MdThumbUp } from 'react-icons/md';
+import { MdViewList, MdViewModule, MdDeleteForever, MdOutlineFileDownload } from 'react-icons/md';
 import { useState, useEffect } from 'react';
+
 import useAPI from '../hooks/useAPI';
+import Video from './Video';
 import './VideoListing.css'
 
 export default function VideoListing () {
@@ -69,25 +71,16 @@ export default function VideoListing () {
         <div className='listing'>
         <Container>
             <Row>
-                {state.data.map((video: any) => {
-                    return (
-                    <Col key={video.id} xs={12} sm={6} md={4} lg={4}>
-                        <div className='video-listing-item'>
-                            <div className='thumbnail'>
-                                <img src={video.videoData.thumbnail} alt={video.videoData.title} />
-                            </div>
-                            <div className='title'>
-                                <h4>{video.videoData.title}</h4>
-                            </div>
-                            <div className='stats'>
-                                <div><MdPerson />{video.videoData.viewCount}</div>
-                                <div><MdThumbUp />{video.videoData.likeCount}</div>
-                            </div>
-                            <p className='add-date'>{video.addDate}</p>
-                        </div>
-                    </Col>
-                    )
-                })}
+                {state.data.map((video: any) => <Video
+                        liked={video.liked}
+                        key={video.id}
+                        thumbnail={video.videoData.thumbnail}
+                        title={video.videoData.title}
+                        viewCount={video.videoData.viewCount}
+                        likeCount={video.videoData.likeCount}
+                        addDate={video.addDate}
+                    />
+                )}
             </Row>
         </Container>
         </div>

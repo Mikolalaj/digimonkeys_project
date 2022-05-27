@@ -1,5 +1,6 @@
 import { FormGroup, InputGroup, InputGroupText, FormFeedback, Input, Button } from 'reactstrap';
 import { Controller } from 'react-hook-form';
+import { useState } from 'react';
 
 import HeartButton from './common/HeartButton';
 import Help from './Help';
@@ -7,6 +8,7 @@ import { IControlledInputProps } from './common/ControlledInput';
 import './VideoLinkInput.css'
 
 function ControlledLinkInput({ label, name, type, control, errors, rules, ...inputProps }: IControlledInputProps) {
+    const [isLiked, setIsLiked] = useState(false);
 
     return (
     <FormGroup className='video-link-input'>
@@ -29,7 +31,7 @@ function ControlledLinkInput({ label, name, type, control, errors, rules, ...inp
                 )}
             />
             <InputGroupText className={errors[name] && `error`}>
-                <HeartButton />
+                <HeartButton value={isLiked} onClick={() => {console.log(isLiked); setIsLiked(!isLiked)}} />
             </InputGroupText>
             <InputGroupText className={errors[name] && `error`}>
                 <Help />
