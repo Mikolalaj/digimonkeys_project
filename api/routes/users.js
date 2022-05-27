@@ -42,11 +42,9 @@ router.post('/auth', async (req, res) => {
             const expiresAt = decodedToken.exp;
 
             const userInfo = {
+                userId: user.user_id,
                 firstName: user.first_name,
-                lastName: user.last_name,
-                email: user.email,
-                username: user.username,
-                admin: user.admin
+                username: user.username
             };
 
             res.cookie('token', token, {
