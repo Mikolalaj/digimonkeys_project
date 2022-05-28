@@ -25,7 +25,8 @@
     "lodash.camelcase": "^4.3.0",
     "morgan": "~1.9.1",
     "pg": "^8.7.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "vimeo": "^2.1.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.35"
