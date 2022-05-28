@@ -5,21 +5,24 @@ type videoAppsType = {
     name: string;
     icon: IconType;
     url: string;
+    videoUrl: string;
     color: string;
 }[]
 
 const videoApps: videoAppsType = [
     {
-        name: 'Youtube',
+        name: 'YouTube',
         icon: FaYoutube,
         url: 'https://www.youtube.com/',
-        color: '#ff0000'
+        videoUrl: 'https://www.youtube.com/watch?v=',
+        color: '#ff0000',
     },
     {
         name: 'Vimeo',
         icon: FaVimeo,
         url: 'https://vimeo.com/',
-        color: '#86c9ef'
+        videoUrl: 'https://vimeo.com/',
+        color: '#86c9ef',
     }
 ]
 

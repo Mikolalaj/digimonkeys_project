@@ -1,0 +1,45 @@
+.listing-filters {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    svg {
+        font-size: 35px;
+        cursor: pointer;
+    }
+
+    select {
+        width: auto;
+    }
+
+    .display {
+        display: flex;
+        gap: 10px;
+        color: var(--bs-gray-500);
+
+        svg.selected {
+            color: var(--bs-gray-600);
+        }
+    }
+
+    .icon-button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        cursor: pointer;
+
+        svg {
+            font-size: 25px;
+        }
+
+        &.remove-all, &.remove-all svg {
+            color: var(--bs-danger);
+        }
+
+        &.load-demo, &.load-demo svg {
+            color: var(--bs-success);
+        }
+    }
+}

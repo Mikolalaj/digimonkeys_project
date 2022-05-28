@@ -8,7 +8,7 @@ export interface IMyPaginationProps {
 
 export default function MyPagination ({ onChangePage, page, pageCount }: IMyPaginationProps) {
     return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <Pagination>
             <PaginationItem disabled={page === 1 ? true : false}>
                 <PaginationLink

@@ -2,6 +2,8 @@ import { Input, Label, FormGroup } from 'reactstrap';
 import { MdViewList, MdViewModule, MdDeleteForever, MdOutlineFileDownload } from 'react-icons/md';
 import { useState } from 'react';
 
+import './ListingFilters.scss';
+
 export interface IListingFiltersProps {
     sorting: 'asc' | 'desc';
     liked: boolean;

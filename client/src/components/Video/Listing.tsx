@@ -1,11 +1,12 @@
 import { Container, Row } from 'reactstrap';
 import { useState, useEffect } from 'react';
+import { NewtonsCradle } from '@uiball/loaders'
 
 import useAPI from '../../hooks/useAPI';
 import Video from './Video';
 import Pagination from './Pagination';
 import ListingFilters from './ListingFilters';
-import './Listing.css'
+import './Listing.scss'
 
 export default function Listing () {
     const pageLimit = 6;
@@ -75,8 +76,9 @@ export default function Listing () {
     <div className='video-listing'>
         <h3>Your saved videos</h3>
         <ListingFilters sorting={sorting} liked={liked} onChangeSort={onChangeSort} onChangeLiked={onChangeLiked} />
-        <Container>
-            <Row>
+        <Container >
+        {state.isLoading && <div className='loading-wrapper'><NewtonsCradle size={55} color='var(--bs-teal)'/></div>}
+            <Row className={state.isLoading ? 'hidden' : ''} >
                 {state.data.map((video: any) => <Video key={video.id} {...video} />)}
             </Row>
         </Container>
