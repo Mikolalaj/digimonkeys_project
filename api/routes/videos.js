@@ -30,7 +30,7 @@ router.get('/', async function(req, res, next) {
         const { rows } = await pool.query(`
         SELECT
             video_id as id,
-            url,
+            url as url_id,
             to_char(add_date, 'YYYY-MM-DD HH24:MI') as add_date,
             liked
         FROM videos
@@ -40,7 +40,7 @@ router.get('/', async function(req, res, next) {
         OFFSET ${skip}`);
 
         for (let i = 0; i < rows.length; i++) {
-            let videoData = await getVideoData(rows[i].url);
+            let videoData = await getVideoData(rows[i].url_id);
             rows[i] = {...rows[i], ...videoData[0]};
         }
         

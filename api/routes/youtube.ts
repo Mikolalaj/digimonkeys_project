@@ -16,8 +16,8 @@ async function getVideoData(videoId: string): Promise<VideoData[]> {
     })
 
     const res = await youtube.videos.list({
-        part: 'snippet, contentDetails, statistics',
-        id: [videoId, '4JOAqRS_lms']
+        part: 'id, snippet, contentDetails, statistics',
+        id: videoId
     })
 
     const videosData: VideoData[] = []

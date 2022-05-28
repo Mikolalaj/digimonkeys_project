@@ -17,8 +17,8 @@ function getVideoData(videoId) {
             auth: process.env.YOUTUBE_API_KEY
         });
         const res = yield youtube.videos.list({
-            part: 'snippet, contentDetails, statistics',
-            id: [videoId, '4JOAqRS_lms']
+            part: 'id, snippet, contentDetails, statistics',
+            id: videoId
         });
         const videosData = [];
         for (const item of res.data.items) {
