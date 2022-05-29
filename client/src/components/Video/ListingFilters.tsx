@@ -28,7 +28,7 @@ export default function ListingFilters ({ sorting, liked, onChangeLiked, onChang
             <FormGroup check>
                 <Input checked={liked} onChange={onChangeLiked} type='checkbox' />
                 <Label check style={{marginBottom: 0}}>
-                    Only liked
+                    Only favorited
                 </Label>
             </FormGroup>
             <div className='icon-button remove-all'><MdDeleteForever />Remove all</div>

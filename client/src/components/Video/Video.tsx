@@ -1,5 +1,5 @@
 import { Col } from "reactstrap";
-import { MdPerson, MdThumbUp } from 'react-icons/md';
+import { MdPerson, MdThumbUp, MdDelete } from 'react-icons/md';
 import { useState } from "react";
 
 import videoApps from "../../VideoApps";
@@ -15,6 +15,19 @@ export interface IVideoProps {
     liked: boolean;
     urlId: string;
     serviceName: string;
+}
+
+function shortenNumber(num: number) {
+    if (num < 1000) {
+        return num;
+    }
+    if (num < 1000000) {
+        return Math.round((num/1000)*10)/10 + 'K';
+    }
+    if (num < 1000000000) {
+        return Math.round((num/1000000)*10)/10 + 'M';
+    }
+    return Math.round((num/1000000000)*10)/10 + 'B';
 }
 
 export default function Video ({thumbnail, title, viewCount, likeCount, addDate, liked, urlId, serviceName}: IVideoProps) {
@@ -39,9 +52,10 @@ export default function Video ({thumbnail, title, viewCount, likeCount, addDate,
                 <h4>{title}</h4>
             </div>
             <div className='stats'>
-                <div><MdPerson />{viewCount}</div>
-                <div><MdThumbUp />{likeCount}</div>
+                <div><MdPerson />{shortenNumber(viewCount)}</div>
+                <div><MdThumbUp />{shortenNumber(likeCount)}</div>
                 <HeartButton onClick={() => setIsFavourite(!isFavourite)} value={isFavourite} />
+                <MdDelete className='delete'/>
             </div>
             <p className='add-date'>{addDate}</p>
         </div>

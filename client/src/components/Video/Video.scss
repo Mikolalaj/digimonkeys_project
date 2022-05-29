@@ -24,8 +24,6 @@
 
     .thumbnail {
         width: 100%;
-        // min-height: 40%;
-        // max-height: 43%;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -73,6 +71,11 @@
         width: 100%;
         color: var(--bs-gray-700);
         margin-top: auto;
+
+        .delete {
+            color: var(--bs-danger);
+            font-size: 1.6rem;
+        }
 
         div {
             display: flex;
