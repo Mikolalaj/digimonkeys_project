@@ -7,6 +7,10 @@ type videoAppsType = {
     url: string;
     videoUrl: string;
     color: string;
+    regex: {
+            url: RegExp;
+            id: RegExp;
+    }
 }[]
 
 const videoApps: videoAppsType = [
@@ -16,6 +20,10 @@ const videoApps: videoAppsType = [
         url: 'https://www.youtube.com/',
         videoUrl: 'https://www.youtube.com/watch?v=',
         color: '#ff0000',
+        regex: {
+            url: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?\/]{11})/,
+            id: /([^#\&\?\/]{11})/
+        }
     },
     {
         name: 'Vimeo',
@@ -23,6 +31,10 @@ const videoApps: videoAppsType = [
         url: 'https://vimeo.com/',
         videoUrl: 'https://vimeo.com/',
         color: '#86c9ef',
+        regex: {
+            url: /(https:\/\/vimeo.com\/)([0-9]{9,12})/,
+            id: /([0-9]{9,12})/
+        }
     }
 ]
 
