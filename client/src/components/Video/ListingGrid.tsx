@@ -6,9 +6,9 @@ import useAPI from '../../hooks/useAPI';
 import Video from './Video';
 import Pagination from './Pagination';
 import ListingFilters from './ListingFilters';
-import './Listing.scss'
+import './ListingGrid.scss'
 
-export default function Listing () {
+export default function ListingGrid () {
     const pageLimit = 6;
     const [sorting, setSorting] = useState<'asc' | 'desc'>('asc');
     const [liked, setLiked] = useState<boolean>(false);

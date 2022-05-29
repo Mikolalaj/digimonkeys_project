@@ -3,7 +3,7 @@ import { Form } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 
 import LinkInput from '../components/Video/LinkInput';
-import Listing from '../components/Video/Listing';
+import ListingGrid from '../components/Video/ListingGrid';
 import { AuthContext } from '../context/AuthContext';
 import './Dashboard.css';
 
@@ -49,7 +49,7 @@ export default function Dashboard () {
                 errors={errors}
             />
         </Form>
-        <Listing />
+        <ListingGrid />
     </div>
     );
 }
