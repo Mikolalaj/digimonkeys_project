@@ -1,7 +1,8 @@
 import { FormGroup, InputGroup, InputGroupText, FormFeedback, Form, Input, Button } from 'reactstrap';
 import { Controller, useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import useAPI from '../../hooks/useAPI';
 import videoApps from '../../VideoApps';
 import HeartButton from '../common/HeartButton';
 import Help from '../Help';
@@ -38,10 +39,16 @@ function validateUrl(input: string): validateInputType | false {
     return false;
 }
 
-function ControlledLinkInput() {
+export interface ILinkInputProps {
+    refreshVideos: () => void;
+}
+
+function LinkInput({ refreshVideos }: ILinkInputProps) {
     const [isLiked, setIsLiked] = useState(false);
 
     const { handleSubmit, reset, setError, control, formState: { errors } } = useForm<InputType>()
+
+    const {state, setRequestData, setIsReady} = useAPI('post', '/videos', {}, {}, false);
 
     function onClickAddVideo(formData: InputType) {
         const result = validateUrl(formData.videoUrl);
@@ -53,10 +60,31 @@ function ControlledLinkInput() {
             })
             return;
         }
-        console.log(result);
+        
+        setRequestData({
+            url: result.videoId,
+            liked: isLiked,
+            serviceName: result.serviceName
+        });
+        setIsReady(true);
+
 
         reset();
     }
+
+    useEffect(() => {
+        if (state.isSuccess) {
+            console.log(state.data)
+            refreshVideos();
+        }
+        else if (state.isError) {
+            console.log(state.error)
+            setError('videoUrl', {
+                type: 'custom',
+                message: 'Something went wrong... (' + state.errorMessage + ')'
+            })
+        }
+    }, [state])
 
     return (
     <Form className='add-video-form' inline onSubmit={handleSubmit(onClickAddVideo)}>
@@ -80,7 +108,7 @@ function ControlledLinkInput() {
                     )}
                 />
                 <InputGroupText className={errors['videoUrl'] && `error`}>
-                    <HeartButton value={isLiked} onClick={() => {console.log(isLiked); setIsLiked(!isLiked)}} />
+                    <HeartButton value={isLiked} onClick={() => {setIsLiked(!isLiked)}} />
                 </InputGroupText>
                 <InputGroupText className={errors['videoUrl'] && `error`}>
                     <Help />
@@ -95,4 +123,4 @@ function ControlledLinkInput() {
     )
 }
 
-export default ControlledLinkInput
+export default LinkInput

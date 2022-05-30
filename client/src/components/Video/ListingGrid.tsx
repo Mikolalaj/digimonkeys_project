@@ -8,22 +8,33 @@ import Pagination from './Pagination';
 import ListingFilters from './ListingFilters';
 import './ListingGrid.scss'
 
-export default function ListingGrid () {
+export interface IListingGridProps {
+    setRefreshVideos: (refreshVideos: () => void) => void;
+}
+
+export default function ListingGrid ({ setRefreshVideos }: IListingGridProps) {
     const pageLimit = 6;
-    const [sorting, setSorting] = useState<'asc' | 'desc'>('asc');
+    const [sorting, setSorting] = useState<'asc' | 'desc'>('desc');
     const [liked, setLiked] = useState<boolean>(false);
     
     const [pageCount, setPageCount] = useState<number>(1);
     const [page, setPage] = useState<number>(1);
 
-    const [stateInfo] = useAPI('get', '/videos/info')
+    const { state: stateInfo, refresh: refreshInfo } = useAPI('get', '/videos/info')
 
-    const [state,,,setParams,, refresh] = useAPI('get', '/videos/', [], {
+    const { state, setParams, refresh } = useAPI('get', '/videos/', [], {
         sort: sorting,
         limit: pageLimit,
         skip: 0,
         liked: liked
     })
+
+    useEffect(() => {
+        setRefreshVideos(() => () => {
+            refreshInfo();
+            refresh();
+        })
+    }, [])
 
     useEffect(() => {
         if (stateInfo.isSuccess) {

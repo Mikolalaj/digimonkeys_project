@@ -13,7 +13,7 @@ export interface IListingFiltersProps {
 
 export default function ListingFilters ({ sorting, liked, onChangeLiked, onChangeSort }: IListingFiltersProps) {
     
-    const [selectedListing, setSelectedListing] = useState<'list' | 'grid'>('list');
+    const [selectedListing, setSelectedListing] = useState<'list' | 'grid'>('grid');
 
     return (
     <div className='listing-filters'>

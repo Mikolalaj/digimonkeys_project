@@ -71,35 +71,75 @@ router.get('/info', async function(req, res, next) {
     }
 });
 
-// router.post('/add', async function(req, res, next) {
-//     const { productId, shelfCode, width, amount, comments, featureId } = req.body;
-//     const productChildId = uuidv4();
-//     const { rows } = await pool.query(`
-//     INSERT INTO products_child
-//         (product_child_id, product_id, shelf_code, width, amount, comments, feature_id, category)
-//     VALUES
-//         ('${productChildId}', '${productId}', '${shelfCode}', '${width}', '${amount}', '${comments}', ${ifNull(featureId)}, 'meter')
-//     RETURNING
-//         product_child_id`);
-//     req.body = rows;
-//     next();
-// });
+router.post('/', async function(req, res, next) {
+    const { sub } = req.user;
+    if (!sub) {
+        return res.status(401).json({ message: 'Authentication error' });
+    }
 
-// router.put('/update', async function(req, res) {
-//     const { productChildId, shelfCode, width, amount, comments, featureId } = req.body;
-//     const response = await pool.query(`
-//     UPDATE
-//         products_child
-//     SET
-//         shelf_code = '${shelfCode}',
-//         width = '${width}',
-//         amount = ${amount},
-//         comments = '${comments}',
-//         feature_id = ${ifNull(featureId)}
-//     WHERE
-//         product_child_id = '${productChildId}'`);
-//     res.send(response);
-// });
+    const { url, liked, serviceName } = req.body;
+    const { rows } = await pool.query(`
+    INSERT INTO videos
+        (user_id, url, liked, service_name)
+    VALUES
+        ('${sub}', '${url}', ${liked}, '${serviceName}')
+    RETURNING
+        video_id as id,
+        url as url_id,
+        to_char(add_date, 'YYYY-MM-DD HH24:MI') as add_date,
+        liked`);
+    
+        for (let i = 0; i < rows.length; i++) {
+        let videoData = await getVideoData(rows[i].url_id);
+        rows[i] = {...rows[i], ...videoData[0]};
+    }
+    
+    req.body = rows;
+    next();
+});
 
+router.patch('/favourite', async function(req, res, next) {
+    const { sub } = req.user;
+    if (!sub) {
+        return res.status(401).json({ message: 'Authentication error' });
+    }
+
+    const { videoId, liked } = req.body;
+    const response = await pool.query(`
+    UPDATE
+        videos
+    SET
+        liked = ${liked}
+    WHERE
+        video_id = '${videoId}'`);
+    
+    if (response.rowCount === 0) {
+        return res.status(404).json({ message: 'Video not found' });
+    }
+    else {
+        return res.status(200).json({ message: 'Video updated' });
+    }
+});
+
+router.delete('/', async function(req, res, next) {
+    const { sub } = req.user;
+    if (!sub) {
+        return res.status(401).json({ message: 'Authentication error' });
+    }
+
+    const { videoId } = req.body;
+    const response = await pool.query(`
+    DELETE FROM
+        videos
+    WHERE
+        video_id = '${videoId}'`);
+    
+    if (response.rowCount === 0) {
+        return res.status(404).json({ message: 'Video not found' });
+    }
+    else {
+        return res.status(200).json({ message: 'Video deleted' });
+    }
+});
 
 module.exports = router;

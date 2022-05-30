@@ -36,7 +36,7 @@ function dataFetchReducer(state, action) {
 function useAPI(method, initialUrl, initialData, initialParams, initialIsReady=true) {
     const [csrfToken, setCsrfToken] = useState('');
     const [url, setUrl] = useState(initialUrl);
-    const [requestData, setRequestData] = useState(null);
+    const [requestData, setRequestData] = useState({});
     const [params, setParams] = useState(initialParams);
     const [isReady, setIsReady] = useState(initialIsReady);
 
@@ -131,7 +131,7 @@ function useAPI(method, initialUrl, initialData, initialParams, initialIsReady=t
 
     }, [url, isReady, csrfToken]);
 
-    return [state, setUrl, setRequestData, setParams, setIsReady, refresh];
+    return {state, setUrl, setRequestData, setParams, setIsReady, refresh};
 };
 
 export default useAPI
