@@ -1,7 +1,8 @@
 import { Input, Label, FormGroup } from 'reactstrap';
 import { MdViewList, MdViewModule, MdDeleteForever, MdOutlineFileDownload } from 'react-icons/md';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
+import useAPI from '../../hooks/useAPI';
 import './ListingFilters.scss';
 
 export interface IListingFiltersProps {
@@ -9,11 +10,42 @@ export interface IListingFiltersProps {
     liked: boolean;
     onChangeLiked: (e: any) => void;
     onChangeSort: (e: any) => void;
+    refresh: () => void;
 }
 
-export default function ListingFilters ({ sorting, liked, onChangeLiked, onChangeSort }: IListingFiltersProps) {
+export default function ListingFilters ({ sorting, liked, onChangeLiked, onChangeSort, refresh }: IListingFiltersProps) {
     
     const [selectedListing, setSelectedListing] = useState<'list' | 'grid'>('grid');
+
+    const {state: stateDelete, setIsReady: setIsReadyDelete} = useAPI('delete', '/videos/all', {}, {}, false);
+
+    function deleteAll() {
+        setIsReadyDelete(true);
+    }
+
+    useEffect(() => {
+        if (stateDelete.isSuccess) {
+            refresh();
+        }
+        else if (stateDelete.isError) {
+            console.log(stateDelete.errorMessage)
+        }
+    }, [stateDelete]);
+
+    const {state: stateDemo, setIsReady: setIsReadyDemo} = useAPI('post', '/videos/demo', {}, {}, false);
+
+    function loadDemo() {
+        setIsReadyDemo(true);
+    }
+
+    useEffect(() => {
+        if (stateDemo.isSuccess) {
+            refresh();
+        }
+        else if (stateDemo.isError) {
+            console.log(stateDemo.errorMessage)
+        }
+    }, [stateDemo]);
 
     return (
     <div className='listing-filters'>
@@ -31,8 +63,8 @@ export default function ListingFilters ({ sorting, liked, onChangeLiked, onChang
                     Only favorited
                 </Label>
             </FormGroup>
-            <div className='icon-button remove-all'><MdDeleteForever />Remove all</div>
-            <div className='icon-button load-demo'><MdOutlineFileDownload />Load demo</div>
+            <div className='icon-button remove-all' onClick={deleteAll}><MdDeleteForever />Remove all</div>
+            <div className='icon-button load-demo' onClick={loadDemo}><MdOutlineFileDownload />Load demo</div>
         </div>
     );
 }

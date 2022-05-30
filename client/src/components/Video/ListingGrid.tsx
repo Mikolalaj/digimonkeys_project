@@ -86,7 +86,7 @@ export default function ListingGrid ({ setRefreshVideos }: IListingGridProps) {
     return (
     <div className='video-listing'>
         <h3>Your saved videos</h3>
-        <ListingFilters sorting={sorting} liked={liked} onChangeSort={onChangeSort} onChangeLiked={onChangeLiked} />
+        <ListingFilters refresh={() => {refreshInfo(); refresh();}} sorting={sorting} liked={liked} onChangeSort={onChangeSort} onChangeLiked={onChangeLiked} />
         <Container >
         {state.isLoading && <div className='loading-wrapper'><NewtonsCradle size={55} color='var(--bs-teal)'/></div>}
             <Row className={state.isLoading ? 'hidden' : ''} >

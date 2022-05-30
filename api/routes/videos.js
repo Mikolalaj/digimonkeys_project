@@ -98,6 +98,46 @@ router.post('/', async function(req, res, next) {
     next();
 });
 
+router.post('/demo', async function(req, res, next) {
+    const { sub } = req.user;
+    if (!sub) {
+        return res.status(401).json({ message: 'Authentication error' });
+    }
+
+    try {
+        await pool.query(`
+        INSERT INTO videos
+            (user_id, url, liked, service_name)
+        VALUES
+            ('${sub}', 'yJuV8PDwvC8', true, 'YouTube'),
+            ('${sub}', 'IXXxciRUMzE', false, 'YouTube'),
+            ('${sub}', 'soRjcajliHE', false, 'YouTube'),
+            ('${sub}', 'PNWsW6c6t8g', true, 'YouTube'),
+            ('${sub}', 'LrSX_OcpeJg', false, 'YouTube'),
+            ('${sub}', 'qolmz4FlnZ0', false, 'YouTube'),
+            ('${sub}', 'J0DjcsK_-HY', true, 'YouTube'),
+            ('${sub}', 'WJ9-xN6dCW4', true, 'YouTube'),
+            ('${sub}', 'L62LtChAwww', true, 'YouTube'),
+            ('${sub}', 'QnxpHIl5Ynw', false, 'YouTube'),
+            ('${sub}', 'WdrNXRdkuG4', false, 'YouTube'),
+            ('${sub}', 'LwXQ7WUh-D0', false, 'YouTube'),
+            ('${sub}', '1uFv9Ts7Sdw', true, 'YouTube'),
+            ('${sub}', 'xzH6toY_EPw', false, 'YouTube'),
+            ('${sub}', 'k-9DOwrLdkg', false, 'YouTube'),
+            ('${sub}', 'Tw0zYd0eIlk', true, 'YouTube'),
+            ('${sub}', 'bRoVXGRm5-Q', true, 'YouTube'),
+            ('${sub}', 'P103bWMdvtA', false, 'YouTube'),
+            ('${sub}', '5kYsxoWfjCg', false, 'YouTube')
+        `);
+
+        res.status(200).json({ message: 'Demo data added' });
+    }
+    catch (error) {
+        return res.status(500).json({ message: `Internal server error ${error}` });
+    }
+
+});
+
 router.patch('/favourite', async function(req, res, next) {
     const { sub } = req.user;
     if (!sub) {
@@ -139,6 +179,25 @@ router.delete('/', async function(req, res, next) {
     }
     else {
         return res.status(200).json({ message: 'Video deleted' });
+    }
+});
+
+router.delete('/all', async function(req, res, next) {
+    const { sub } = req.user;
+    if (!sub) {
+        return res.status(401).json({ message: 'Authentication error' });
+    }
+    try {
+        await pool.query(`
+        DELETE FROM
+            videos
+        WHERE
+            user_id = '${sub}'`);
+        
+        return res.status(200).json({ message: 'All videos deleted' });
+    }
+    catch (error) {
+        return res.status(500).json({ message: `Internal server error ${error}` });
     }
 });
 
