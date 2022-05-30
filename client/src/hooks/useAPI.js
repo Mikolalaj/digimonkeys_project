@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
   
@@ -33,15 +33,15 @@ function dataFetchReducer(state, action) {
     }
 };
   
-function useAPI(method, initialUrl, initialData, initialIsReady=true) {
+function useAPI(method, initialUrl, initialData, initialParams, initialIsReady=true) {
     const [csrfToken, setCsrfToken] = useState('');
     const [url, setUrl] = useState(initialUrl);
-    const [requestData, setRequestData] = useState(null);
-    const [params, setParams] = useState(null);
+    const [requestData, setRequestData] = useState({});
+    const [params, setParams] = useState(initialParams);
     const [isReady, setIsReady] = useState(initialIsReady);
 
     const { logout } = useContext(AuthContext);
-    const { push } = useHistory();
+    const navigate = useNavigate();
 
     const [state, dispatch] = useReducer(dataFetchReducer, {
         isLoading: true,
@@ -113,7 +113,7 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
                     console.log(error.response.data.message)
                     if (error.response.status === 401) {
                         logout();
-                        push('/login');
+                        navigate('/login');
                     }
                     setIsReady(false);
                     setCsrfToken('');
@@ -131,7 +131,7 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
 
     }, [url, isReady, csrfToken]);
 
-    return [state, setUrl, setRequestData, setParams, setIsReady, refresh];
+    return {state, setUrl, setRequestData, setParams, setIsReady, refresh};
 };
 
 export default useAPI
