@@ -1,6 +1,7 @@
-import { Col } from "reactstrap";
+import { Col, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { MdPerson, MdThumbUp, MdDelete } from 'react-icons/md';
 import { useEffect, useState } from "react";
+import ReactPlayer from 'react-player/lazy'
 
 import useAPI from "../../hooks/useAPI";
 import videoApps from "../../VideoApps";
@@ -36,6 +37,7 @@ function shortenNumber(num: number) {
 export default function Video (props: IVideoProps) {
     const {thumbnail, title, viewCount, likeCount, addDate, liked, urlId, serviceName, id, refresh} = props;
 
+    const [isOpenModal, setIsOpenModal] = useState(false);
     const [isFavourite, setIsFavourite] = useState(liked);
 
     function createVideoLink(): string {
@@ -88,11 +90,19 @@ export default function Video (props: IVideoProps) {
 
     return (
     <Col xs={12} sm={6} md={4} lg={4}>
+        <Modal size='lg' style={{maxWidth: '675px', width: '100%'}} isOpen={isOpenModal} centered toggle={() => setIsOpenModal(!isOpenModal)}>
+            <ModalHeader toggle={() => setIsOpenModal(!isOpenModal)}>
+                {title}
+            </ModalHeader>
+            <ModalBody>
+                <ReactPlayer url={createVideoLink()} />
+            </ModalBody>
+        </Modal>
         <div className='video-listing-item'>
-            <div className='thumbnail' onClick={() => window.open(createVideoLink(), '_blank')}>
+            <div className='thumbnail' onClick={() => setIsOpenModal(true)}>
                 <img src={thumbnail} alt={title} />
             </div>
-            <div className='title'>
+            <div className='title' onClick={() => window.open(createVideoLink(), '_blank')}>
                 <h4>{title}</h4>
             </div>
             <div className='stats'>
