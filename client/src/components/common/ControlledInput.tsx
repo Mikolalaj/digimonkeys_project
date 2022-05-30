@@ -2,7 +2,6 @@ import { FormGroup, FormFeedback, Label, Input } from 'reactstrap';
 import { Controller, ControllerRenderProps } from 'react-hook-form';
 import { InputProps, InputType } from 'reactstrap/types/lib/Input';
 import { UseControllerProps } from 'react-hook-form';
-import './ControlledInput.css';
 
 export interface IControlledInputProps extends Omit<InputProps, keyof ControllerRenderProps>   {
     label: string;
