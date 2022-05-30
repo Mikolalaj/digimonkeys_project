@@ -83,15 +83,13 @@ export default function ListingGrid ({ setRefreshVideos }: IListingGridProps) {
         refresh();
     }
 
-    console.log(state.data)
-
     return (
     <div className='video-listing'>
         <h3>Your saved videos</h3>
         <ListingFilters refresh={() => {refreshInfo(); refresh();}} sorting={sorting} liked={liked} onChangeSort={onChangeSort} onChangeLiked={onChangeLiked} />
         <Container >
         {state.isLoading && <div className='loading-wrapper'><NewtonsCradle size={55} color='var(--bs-teal)'/></div>}
-        {state.data.length === 0 && <p className='no-data'>You don't have any saved {liked && 'favourited'} videos yet 🙁</p>}
+        {(state.isSuccess && state.data.length === 0) && <p className='no-data'>You don't have any saved {liked && 'favourited'} videos yet 🙁</p>}
             <Row className={state.isLoading && state.data.length === 0 ? 'hidden' : ''} >
                 {state.data.map((video: any) => <Video key={video.id} {...video} refresh={() => {refreshInfo(); refresh();}}/>)}
             </Row>
