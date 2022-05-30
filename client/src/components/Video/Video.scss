@@ -73,6 +73,7 @@
         margin-top: auto;
 
         .delete {
+            cursor: pointer;
             color: var(--bs-danger);
             font-size: 1.6rem;
         }

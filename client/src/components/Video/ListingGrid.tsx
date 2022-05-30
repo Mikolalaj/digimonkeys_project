@@ -90,7 +90,7 @@ export default function ListingGrid ({ setRefreshVideos }: IListingGridProps) {
         <Container >
         {state.isLoading && <div className='loading-wrapper'><NewtonsCradle size={55} color='var(--bs-teal)'/></div>}
             <Row className={state.isLoading ? 'hidden' : ''} >
-                {state.data.map((video: any) => <Video key={video.id} {...video} />)}
+                {state.data.map((video: any) => <Video key={video.id} {...video} refresh={() => {refreshInfo(); refresh();}}/>)}
             </Row>
         </Container>
         <Pagination onChangePage={onChangePage} page={page} pageCount={pageCount} />
