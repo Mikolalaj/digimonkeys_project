@@ -66,7 +66,8 @@ export default function Video (props: IVideoProps) {
         else if (stateDelete.isError) {
             console.log(stateDelete.errorMessage)
         }
-    }, [stateDelete, refresh]);
+    // eslint-disable-next-line
+    }, [stateDelete]);
 
     const {state, setRequestData, setIsReady} = useAPI('patch', '/videos/favourite', {}, {}, false);
 

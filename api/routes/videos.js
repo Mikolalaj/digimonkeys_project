@@ -78,6 +78,16 @@ router.post('/', async function(req, res, next) {
     }
 
     const { url, liked, serviceName } = req.body;
+    if (url === 'undefined' || liked === 'undefined' || serviceName === 'undefined') {
+        return res.status(400).json({ message: 'No required request body (url, liked, serviceName)' });
+    }
+    
+    const videoData = await getVideoData(url);
+
+    if (videoData.length === 0) {
+        return res.status(400).json({ message: 'Invalid url' });
+    }
+
     const { rows } = await pool.query(`
     INSERT INTO videos
         (user_id, url, liked, service_name)
@@ -88,11 +98,8 @@ router.post('/', async function(req, res, next) {
         url as url_id,
         to_char(add_date, 'YYYY-MM-DD HH24:MI') as add_date,
         liked`);
-    
-        for (let i = 0; i < rows.length; i++) {
-        let videoData = await getVideoData(rows[i].url_id);
-        rows[i] = {...rows[i], ...videoData[0]};
-    }
+
+    rows[0] = {...rows[0], ...videoData[0]};
     
     req.body = rows;
     next();

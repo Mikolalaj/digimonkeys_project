@@ -34,6 +34,7 @@ export default function Listing ({ setRefreshVideos }: IListingProps) {
             refreshInfo();
             refreshVideos();
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const pageCount = useMemo(() => {
@@ -101,7 +102,7 @@ export default function Listing ({ setRefreshVideos }: IListingProps) {
         <Container >
         {stateVideos.isLoading && <div className='loading-wrapper'><NewtonsCradle size={55} color='var(--bs-teal)'/></div>}
         {(stateVideos.isSuccess && stateVideos.data.length === 0) && <p className='no-data'>You don't have any saved {liked && 'favourited'} videos yet 🙁</p>}
-            <Row className={stateVideos.isLoading && stateVideos.data.length === 0 ? 'hidden' : ''} >
+            <Row className={(stateVideos.isLoading || stateVideos.data.length === 0) ? 'hidden' : ''} >
                 {selectedListing === 'grid' ?
                 <Grid dataVideos={stateVideos.data} refresh={refresh} /> :
                 <List dataVideos={stateVideos.data} refresh={refresh} />}
