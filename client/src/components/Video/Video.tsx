@@ -19,6 +19,7 @@ export interface IVideoProps {
     serviceName: string;
     id: string;
     refresh: () => void;
+    listing: 'list' | 'grid';
 }
 
 function shortenNumber(num: number) {
@@ -35,7 +36,7 @@ function shortenNumber(num: number) {
 }
 
 export default function Video (props: IVideoProps) {
-    const {thumbnail, title, viewCount, likeCount, addDate, liked, urlId, serviceName, id, refresh} = props;
+    const {thumbnail, title, viewCount, likeCount, addDate, liked, urlId, serviceName, id, refresh, listing} = props;
 
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isFavourite, setIsFavourite] = useState(liked);
@@ -89,7 +90,7 @@ export default function Video (props: IVideoProps) {
     }, [state]);
 
     return (
-    <Col xs={12} sm={6} md={4} lg={4}>
+    <Col xs={12} sm={listing ==='grid' ? 6 : 12} md={listing ==='grid' ? 4 : 12} lg={listing ==='grid' ? 4 : 12}>
         <Modal size='lg' style={{maxWidth: '675px', width: '100%'}} isOpen={isOpenModal} centered toggle={() => setIsOpenModal(!isOpenModal)}>
             <ModalHeader toggle={() => setIsOpenModal(!isOpenModal)}>
                 {title}
@@ -98,10 +99,11 @@ export default function Video (props: IVideoProps) {
                 <ReactPlayer url={createVideoLink()} />
             </ModalBody>
         </Modal>
-        <div className='video-listing-item'>
+        <div className={`video-item ${listing}`}>
             <div className='thumbnail' onClick={() => setIsOpenModal(true)}>
                 <img src={thumbnail} alt={title} />
             </div>
+            {listing ==='grid' ? <>
             <div className='title' onClick={() => window.open(createVideoLink(), '_blank')}>
                 <h4>{title}</h4>
             </div>
@@ -111,7 +113,23 @@ export default function Video (props: IVideoProps) {
                 <HeartButton onClick={changeFavourite} value={isFavourite} />
                 <MdDelete className='delete' onClick={deleteVideo}/>
             </div>
-            <p className='add-date'>{addDate}</p>
+            <p className='add-date'>{addDate}</p></> :
+            
+            <div className='list-info'>
+                <div className='title' onClick={() => window.open(createVideoLink(), '_blank')}>
+                    <h4>{title}</h4>
+                </div>
+                <div className='stats-date'>
+                    <div className='stats'>
+                        <div><MdPerson />{shortenNumber(viewCount)}</div>
+                        <div><MdThumbUp />{shortenNumber(likeCount)}</div>
+                        <HeartButton onClick={changeFavourite} value={isFavourite} />
+                        <MdDelete className='delete' onClick={deleteVideo}/>
+                    </div>
+                    <p className='add-date'>{addDate}</p>
+                </div>
+            </div>
+            }
         </div>
     </Col>
     );

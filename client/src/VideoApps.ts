@@ -25,17 +25,17 @@ const videoApps: videoAppsType = [
             id: /([^#\&\?\/]{11})/
         }
     },
-    {
-        name: 'Vimeo',
-        icon: FaVimeo,
-        url: 'https://vimeo.com/',
-        videoUrl: 'https://vimeo.com/',
-        color: '#86c9ef',
-        regex: {
-            url: /(https:\/\/vimeo.com\/)([0-9]{9,12})/,
-            id: /([0-9]{9,12})/
-        }
-    }
+    // {
+    //     name: 'Vimeo',
+    //     icon: FaVimeo,
+    //     url: 'https://vimeo.com/',
+    //     videoUrl: 'https://vimeo.com/',
+    //     color: '#86c9ef',
+    //     regex: {
+    //         url: /(https:\/\/vimeo.com\/)([0-9]{9,12})/,
+    //         id: /([0-9]{9,12})/
+    //     }
+    // }
 ]
 
 export default videoApps;

@@ -2,7 +2,7 @@ import { Input, Label, FormGroup } from 'reactstrap';
 import { MdViewList, MdViewModule, MdDeleteForever, MdOutlineFileDownload } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 
-import useAPI from '../../hooks/useAPI';
+import useAPI from '../../../hooks/useAPI';
 import './ListingFilters.scss';
 
 export interface IListingFiltersProps {
@@ -11,12 +11,12 @@ export interface IListingFiltersProps {
     onChangeLiked: (e: any) => void;
     onChangeSort: (e: any) => void;
     refresh: () => void;
+    setSelectedListing: (listing: 'grid' | 'list') => void;
+    selectedListing: 'grid' | 'list';
 }
 
-export default function ListingFilters ({ sorting, liked, onChangeLiked, onChangeSort, refresh }: IListingFiltersProps) {
+export default function ListingFilters ({ sorting, liked, onChangeLiked, onChangeSort, refresh, setSelectedListing, selectedListing }: IListingFiltersProps) {
     
-    const [selectedListing, setSelectedListing] = useState<'list' | 'grid'>('grid');
-
     const {state: stateDelete, setIsReady: setIsReadyDelete} = useAPI('delete', '/videos/all', {}, {}, false);
 
     function deleteAll() {
