@@ -66,7 +66,7 @@ export default function Video (props: IVideoProps) {
         else if (stateDelete.isError) {
             console.log(stateDelete.errorMessage)
         }
-    }, [stateDelete]);
+    }, [stateDelete, refresh]);
 
     const {state, setRequestData, setIsReady} = useAPI('patch', '/videos/favourite', {}, {}, false);
 
@@ -80,14 +80,11 @@ export default function Video (props: IVideoProps) {
     }
 
     useEffect(() => {
-        if (state.isSuccess) {
-            console.log(state.data.message);
-        }
-        else if (state.isError) {
+        if (state.isError) {
             setIsFavourite(!isFavourite)
             console.log(state.errorMessage)
         }
-    }, [state]);
+    }, [state, isFavourite]);
 
     return (
     <Col xs={12} sm={listing ==='grid' ? 6 : 12} md={listing ==='grid' ? 4 : 12} lg={listing ==='grid' ? 4 : 12}>
