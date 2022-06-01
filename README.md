@@ -23,6 +23,5 @@ Istnieje możliwość załadowania gotowego zestawu filmów, po wciśnięciu prz
      - `npm install`
      - `npm start`
  - W katalogu /client
-     - w pliku .env uzupełnij JWT_SECRET i YOUTUBE_API_KEY
      - `npm install`
      - `npm start`
