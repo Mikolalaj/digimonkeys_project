@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+    postgres:
+        environment:
+            POSTGRES_USER: digimonkeys
+            POSTGRES_PASSWORD: qwerty123
+            POSTGRES_DB: digimonkeys
+        image: postgres:13
+        ports:
+            - '5432:5432'
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    
