@@ -1,7 +1,9 @@
 import { FormGroup, InputGroup, InputGroupText, FormFeedback, Form, Input, Button } from 'reactstrap';
 import { Controller, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
+import videosState from '../../atoms';
 import useAPI from '../../hooks/useAPI';
 import videoApps from '../../VideoApps';
 import HeartButton from '../common/HeartButton';
@@ -39,11 +41,9 @@ function validateUrl(input: string): validateInputType | false {
     return false;
 }
 
-export interface ILinkInputProps {
-    refreshVideos: () => void;
-}
+function LinkInput() {
+    const [refreshVideos] = useRecoilState(videosState);
 
-function LinkInput({ refreshVideos }: ILinkInputProps) {
     const [isLiked, setIsLiked] = useState(false);
 
     const { handleSubmit, reset, setError, control, formState: { errors } } = useForm<InputType>()

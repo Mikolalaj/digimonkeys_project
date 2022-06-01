@@ -1,7 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Container, Row } from 'reactstrap';
 import { NewtonsCradle } from '@uiball/loaders'
+import { useRecoilState } from 'recoil';
 
+import videosState from '../../../atoms';
 import Pagination from './Pagination';
 import useAPI from '../../../hooks/useAPI';
 import ListingFilters from './ListingFilters';
@@ -9,11 +11,9 @@ import Grid from './Grid'
 import List from './List'
 import './Listing.scss'
 
-export interface IListingProps {
-    setRefreshVideos: (refreshVideos: () => void) => void;
-}
+export default function Listing () {
+    const [, setRefreshVideos] = useRecoilState(videosState);
 
-export default function Listing ({ setRefreshVideos }: IListingProps) {
     const pageLimit = 6;
     const [sorting, setSorting] = useState<'asc' | 'desc'>('desc');
     const [liked, setLiked] = useState<boolean>(false);

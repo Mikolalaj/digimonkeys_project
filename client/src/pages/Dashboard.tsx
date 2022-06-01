@@ -1,4 +1,5 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo } from 'react';
+
 import Listing from '../components/Video/Listings/Listing';
 import LinkInput from '../components/Video/LinkInput';
 import { AuthContext } from '../context/AuthContext';
@@ -6,7 +7,6 @@ import './Dashboard.css';
 
 export default function Dashboard () {
     const { getFirstName } = useContext(AuthContext);
-    const [refreshVideos, setRefreshVideos] = useState<() => void>(() => () => {});
 
     const greeting = useMemo(() => {
         var today = new Date();
@@ -25,8 +25,8 @@ export default function Dashboard () {
     return (
     <div className='page-content'>
         <h1>{greeting} {getFirstName()}!</h1>
-        <LinkInput refreshVideos={refreshVideos} />
-        <Listing setRefreshVideos={setRefreshVideos} />
+        <LinkInput />
+        <Listing />
     </div>
     );
 }
