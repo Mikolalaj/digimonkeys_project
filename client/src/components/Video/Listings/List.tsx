@@ -3,14 +3,13 @@ import Video from '../Video';
 
 export interface IListProps {
     dataVideos: IVideoProps[];
-    refresh: () => void;
 }
 
-export default function List ({ dataVideos, refresh }: IListProps) {
+export default function List ({ dataVideos }: IListProps) {
     
     return (
     <>
-        {dataVideos.map((video: IVideoProps) => <Video key={video.id} {...video} refresh={refresh} listing='list'/>)}
+        {dataVideos.map((video: IVideoProps) => <Video key={video.id} {...video} listing='list'/>)}
     </>
     );
 }

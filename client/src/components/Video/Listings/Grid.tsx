@@ -3,14 +3,13 @@ import Video from '../Video';
 
 export interface IGridProps {
     dataVideos: IVideoProps[];
-    refresh: () => void;
 }
 
-export default function Grid ({ dataVideos, refresh }: IGridProps) {
+export default function Grid ({ dataVideos }: IGridProps) {
 
     return (
     <>
-        {dataVideos.map((video: IVideoProps) => <Video key={video.id} {...video} refresh={refresh} listing='grid'/>)}
+        {dataVideos.map((video: IVideoProps) => <Video key={video.id} {...video} listing='grid'/>)}
     </>
     );
 }

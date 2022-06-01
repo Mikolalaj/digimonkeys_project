@@ -20,7 +20,7 @@ type validateInputType = {
 }
 
 function validateUrl(input: string): validateInputType | false {
-    if (input != undefined || input != '') {
+    if (input !== undefined || input !== '') {
         for (const app of videoApps) {
             let match = input.match(app.regex.url);
             if (match) {

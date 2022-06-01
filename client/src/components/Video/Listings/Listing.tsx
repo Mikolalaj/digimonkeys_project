@@ -30,9 +30,16 @@ export default function Listing () {
     })
 
     useEffect(() => {
-        setRefreshVideos(() => () => {
+        setRefreshVideos(() => (newPageNumber=1) => {
+            setParamsVideos({
+                sort: sorting,
+                skip: (newPageNumber-1) * pageLimit,
+                liked: liked,
+                limit: pageLimit,
+            });
             refreshInfo();
             refreshVideos();
+            setCurrentPage(newPageNumber);
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -50,19 +57,19 @@ export default function Listing () {
     }, [stateInfo, liked])
 
     function refresh(newPageNumber=1) {
-        setCurrentPage(newPageNumber);
         refreshInfo();
         refreshVideos();
+        setCurrentPage(newPageNumber);
     }
 
-    function onChangePage(newPage: number) {
+    function onChangePage(newPageNumber: number) {
         setParamsVideos({
             sort: sorting,
-            skip: (newPage-1) * pageLimit,
+            skip: (newPageNumber-1) * pageLimit,
             liked: liked,
             limit: pageLimit,
         });
-        refresh(newPage);
+        refresh(newPageNumber);
     }
 
     function onChangeSort(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -91,7 +98,6 @@ export default function Listing () {
     <div className='video-listing'>
         <h3>Your saved videos</h3>
         <ListingFilters
-            refresh={refresh}
             sorting={sorting}
             liked={liked}
             onChangeSort={onChangeSort}
@@ -104,8 +110,8 @@ export default function Listing () {
         {(stateVideos.isSuccess && stateVideos.data.length === 0) && <p className='no-data'>You don't have any saved {liked && 'favourited'} videos yet 🙁</p>}
             <Row className={(stateVideos.isLoading || stateVideos.data.length === 0) ? 'hidden' : ''} >
                 {selectedListing === 'grid' ?
-                <Grid dataVideos={stateVideos.data} refresh={refresh} /> :
-                <List dataVideos={stateVideos.data} refresh={refresh} />}
+                <Grid dataVideos={stateVideos.data} /> :
+                <List dataVideos={stateVideos.data} />}
             </Row>
         </Container>
         {stateVideos.data.length !== 0 && <Pagination onChangePage={onChangePage} page={currentPage} pageCount={pageCount} />}

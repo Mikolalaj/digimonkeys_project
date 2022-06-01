@@ -1,8 +1,10 @@
 import { Input, Label, FormGroup } from 'reactstrap';
 import { MdViewList, MdViewModule, MdDeleteForever, MdOutlineFileDownload } from 'react-icons/md';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 
 import useAPI from '../../../hooks/useAPI';
+import videosState from '../../../atoms';
 import './ListingFilters.scss';
 
 export interface IListingFiltersProps {
@@ -10,13 +12,15 @@ export interface IListingFiltersProps {
     liked: boolean;
     onChangeLiked: (e: any) => void;
     onChangeSort: (e: any) => void;
-    refresh: () => void;
     setSelectedListing: (listing: 'grid' | 'list') => void;
     selectedListing: 'grid' | 'list';
 }
 
-export default function ListingFilters ({ sorting, liked, onChangeLiked, onChangeSort, refresh, setSelectedListing, selectedListing }: IListingFiltersProps) {
+export default function ListingFilters (props: IListingFiltersProps) {
+    const { sorting, liked, onChangeLiked, onChangeSort, setSelectedListing, selectedListing } = props;
     
+    const [refreshVideos] = useRecoilState(videosState);
+
     const {state: stateDelete, setIsReady: setIsReadyDelete} = useAPI('delete', '/videos/all', {}, {}, false);
 
     function deleteAll() {
@@ -25,7 +29,7 @@ export default function ListingFilters ({ sorting, liked, onChangeLiked, onChang
 
     useEffect(() => {
         if (stateDelete.isSuccess) {
-            refresh();
+            refreshVideos();
         }
         else if (stateDelete.isError) {
             console.log(stateDelete.errorMessage)
@@ -40,7 +44,7 @@ export default function ListingFilters ({ sorting, liked, onChangeLiked, onChang
 
     useEffect(() => {
         if (stateDemo.isSuccess) {
-            refresh();
+            refreshVideos();
         }
         else if (stateDemo.isError) {
             console.log(stateDemo.errorMessage)

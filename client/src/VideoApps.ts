@@ -1,4 +1,4 @@
-import { FaYoutube, FaVimeo } from 'react-icons/fa';
+import { FaYoutube } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
 type videoAppsType = {
@@ -21,8 +21,8 @@ const videoApps: videoAppsType = [
         videoUrl: 'https://www.youtube.com/watch?v=',
         color: '#ff0000',
         regex: {
-            url: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?\/]{11})/,
-            id: /([^#\&\?\/]{11})/
+            url: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?/]{11})/,
+            id: /([^#&?/]{11})/
         }
     },
     // {

@@ -1,8 +1,10 @@
 import { Col, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { MdPerson, MdThumbUp, MdDelete } from 'react-icons/md';
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import ReactPlayer from 'react-player/lazy'
 
+import videosState from "../../atoms";
 import useAPI from "../../hooks/useAPI";
 import videoApps from "../../VideoApps";
 import HeartButton from "../common/HeartButton";
@@ -18,7 +20,6 @@ export interface IVideoProps {
     urlId: string;
     serviceName: string;
     id: string;
-    refresh: () => void;
     listing: 'list' | 'grid';
 }
 
@@ -36,7 +37,9 @@ function shortenNumber(num: number) {
 }
 
 export default function Video (props: IVideoProps) {
-    const {thumbnail, title, viewCount, likeCount, addDate, liked, urlId, serviceName, id, refresh, listing} = props;
+    const {thumbnail, title, viewCount, likeCount, addDate, liked, urlId, serviceName, id, listing} = props;
+
+    const [refreshVideos] = useRecoilState(videosState);
 
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isFavourite, setIsFavourite] = useState(liked);
@@ -61,7 +64,7 @@ export default function Video (props: IVideoProps) {
 
     useEffect(() => {
         if (stateDelete.isSuccess) {
-            refresh();
+            refreshVideos();
         }
         else if (stateDelete.isError) {
             console.log(stateDelete.errorMessage)
