@@ -67,7 +67,7 @@ function useAPI( method: Method, initials: Initials) {
     const [url, setUrl] = useState<string>(initials.url);
     const [requestData, setRequestData] = useState<{} | undefined>(initials.requestData);
     const [params, setParams] = useState<{} | undefined>(initials.params);
-    const [isReady, setIsReady] = useState<boolean>(initials.isReady || true);
+    const [isReady, setIsReady] = useState<boolean>(initials.isReady === undefined ? true : initials.isReady);
 
     const { logout } = useContext(AuthContext);
     const navigate = useNavigate();
