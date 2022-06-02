@@ -20,14 +20,18 @@ export default function Listing () {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [selectedListing, setSelectedListing] = useState<'list' | 'grid'>('grid');
 
-    const { state: stateInfo, refresh: refreshInfo } = useAPI('get', '/videos/info')
+    const { state: stateInfo, refresh: refreshInfo } = useAPI('get', { url: '/videos/info' })
 
-    const { state: stateVideos, setParams: setParamsVideos, refresh: refreshVideosData } = useAPI('get', '/videos/', [], {
-        sort: sorting,
-        limit: pageLimit,
-        skip: 0,
-        liked: liked
-    })
+    const { state: stateVideos, params: paramsVideos, setParams: setParamsVideos, refresh: refreshVideosData } = useAPI('get', {
+        url: '/videos',
+        resultData: [],
+        params: {
+            sort: sorting,
+            limit: pageLimit,
+            skip: 0,
+            liked: liked
+        }
+    });
 
     useEffect(() => {
         setRefreshVideos(() => (newPageNumber=1) => {

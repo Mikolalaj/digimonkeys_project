@@ -53,7 +53,10 @@ export default function Video (props: IVideoProps) {
         return ''
     }
 
-    const {state: stateDelete, setRequestData: setDeleteRequestData, setIsReady: setIsReadyDelete} = useAPI('delete', '/videos', {}, {}, false);
+    const {state: stateDelete, setRequestData: setDeleteRequestData, setIsReady: setIsReadyDelete} = useAPI('delete', {
+        url: '/videos',
+        isReady: false
+    });
 
     function deleteVideo() {
         setDeleteRequestData({
@@ -72,7 +75,10 @@ export default function Video (props: IVideoProps) {
     // eslint-disable-next-line
     }, [stateDelete]);
 
-    const {state, setRequestData, setIsReady} = useAPI('patch', '/videos/favourite', {}, {}, false);
+    const {state, setRequestData, setIsReady} = useAPI('patch', {
+        url: '/videos/favourite',
+        isReady: false
+    });
 
     function changeFavourite() {
         setIsFavourite(!isFavourite)

@@ -48,7 +48,11 @@ function LinkInput() {
 
     const { handleSubmit, reset, setError, control, formState: { errors } } = useForm<InputType>()
 
-    const {state, setRequestData, setIsReady} = useAPI('post', '/videos', {}, {}, false);
+    const {state, setRequestData, setIsReady} = useAPI('post', {
+        url: '/videos',
+        resultData: [],
+        isReady: false,
+    });
 
     function onClickAddVideo(formData: InputType) {
         const result = validateUrl(formData.videoUrl);
@@ -78,7 +82,7 @@ function LinkInput() {
             refreshVideos();
         }
         else if (state.isError) {
-            console.log(state.error)
+            console.log(state.errorMessage)
             setError('videoUrl', {
                 type: 'custom',
                 message: 'Something went wrong... (' + state.errorMessage + ')'

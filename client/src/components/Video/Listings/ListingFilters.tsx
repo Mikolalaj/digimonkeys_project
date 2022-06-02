@@ -21,7 +21,10 @@ export default function ListingFilters (props: IListingFiltersProps) {
     
     const [refreshVideos] = useRecoilState(videosState);
 
-    const {state: stateDelete, setIsReady: setIsReadyDelete} = useAPI('delete', '/videos/all', {}, {}, false);
+    const {state: stateDelete, setIsReady: setIsReadyDelete} = useAPI('delete', {
+        url: '/videos/all',
+        isReady: false
+    })
 
     function deleteAll() {
         setIsReadyDelete(true);
@@ -36,7 +39,10 @@ export default function ListingFilters (props: IListingFiltersProps) {
         }
     }, [stateDelete]);
 
-    const {state: stateDemo, setIsReady: setIsReadyDemo} = useAPI('post', '/videos/demo', {}, {}, false);
+    const {state: stateDemo, setIsReady: setIsReadyDemo} = useAPI('post', {
+        url:'/videos/demo',
+        isReady: false
+    })
 
     function loadDemo() {
         setIsReadyDemo(true);

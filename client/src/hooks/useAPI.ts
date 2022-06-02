@@ -2,17 +2,37 @@ import { useState, useEffect, useReducer, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
-  
-function dataFetchReducer(state, action) {
+import { Method, AxiosError } from 'axios';
+
+enum ApiActionType {
+    INIT = 'INIT',
+    SUCCESS = 'SUCCESS',
+    FAILURE = 'FAILURE'
+}
+
+interface ApiAction {
+    type: ApiActionType;
+    payload?: any;
+}
+
+type ApiState = {
+    isLoading: boolean;
+    isError: boolean;
+    isSuccess: boolean;
+    data: any;
+    errorMessage: string;
+}
+
+function dataFetchReducer(state: ApiState, action: ApiAction): ApiState {
     switch (action.type) {
-        case 'FETCH_INIT':
+        case ApiActionType.INIT:
             return {
                 ...state,
                 isLoading: true,
                 isError: false,
                 isSuccess: false
             };
-        case 'FETCH_SUCCESS':
+        case ApiActionType.SUCCESS:
             return {
                 ...state,
                 isLoading: false,
@@ -20,7 +40,7 @@ function dataFetchReducer(state, action) {
                 isSuccess: true,
                 data: action.payload
             };
-        case 'FETCH_FAILURE':
+        case ApiActionType.FAILURE:
             return {
                 ...state,
                 isLoading: false,
@@ -32,13 +52,22 @@ function dataFetchReducer(state, action) {
             throw new Error();
     }
 };
+
+type Initials = {
+    url: string;
+    requestData?: {};
+    resultData?: {} | [];
+    params?: {};
+    isReady?: boolean;
+}
+
   
-function useAPI(method, initialUrl, initialData, initialParams, initialIsReady=true) {
-    const [csrfToken, setCsrfToken] = useState('');
-    const [url, setUrl] = useState(initialUrl);
-    const [requestData, setRequestData] = useState({});
-    const [params, setParams] = useState(initialParams);
-    const [isReady, setIsReady] = useState(initialIsReady);
+function useAPI( method: Method, initials: Initials) {
+    const [csrfToken, setCsrfToken] = useState<string>('');
+    const [url, setUrl] = useState<string>(initials.url);
+    const [requestData, setRequestData] = useState<{} | undefined>(initials.requestData);
+    const [params, setParams] = useState<{} | undefined>(initials.params);
+    const [isReady, setIsReady] = useState<boolean>(initials.isReady || true);
 
     const { logout } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -47,7 +76,7 @@ function useAPI(method, initialUrl, initialData, initialParams, initialIsReady=t
         isLoading: true,
         isError: false,
         isSuccess: false,
-        data: initialData,
+        data: initials.resultData || {},
         errorMessage: ''
     });
 
@@ -88,7 +117,7 @@ function useAPI(method, initialUrl, initialData, initialParams, initialIsReady=t
 
         async function fetchData() {
 
-            dispatch({ type: 'FETCH_INIT' });
+            dispatch({ type: ApiActionType.INIT });
 
             try {
                 const result = await axios(url, {
@@ -96,27 +125,30 @@ function useAPI(method, initialUrl, initialData, initialParams, initialIsReady=t
                     baseURL: process.env.REACT_APP_API_URL,
                     data: requestData,
                     params: params,
-                    credentials: 'include',
                     withCredentials: true,
                     headers: { 'X-CSRF-TOKEN': csrfToken }
                 });
 
                 if (!didCancel) {
-                    dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+                    dispatch({ type: ApiActionType.SUCCESS, payload: result.data });
                     setIsReady(false);
                     setCsrfToken('');
                 }
             } catch (error) {
                 if (!didCancel) {
-                    dispatch({ type: 'FETCH_FAILURE', payload: error.response.data.message });
-                    console.log(error)
-                    console.log(error.response.data.message)
-                    if (error.response.status === 401) {
-                        logout();
-                        navigate('/login');
+                    if (error instanceof AxiosError) {
+                        dispatch({ type: ApiActionType.FAILURE, payload: error.response!.data.message });
+                        console.log(error.response!.data.message);
+                        console.log(error)
+                        if (error.response!.status === 401) {
+                            logout();
+                            navigate('/login');
+                        }
+                        setIsReady(false);
+                        setCsrfToken('');
+                    } else {
+                        throw error;
                     }
-                    setIsReady(false);
-                    setCsrfToken('');
                 }
             }
         };
@@ -131,7 +163,7 @@ function useAPI(method, initialUrl, initialData, initialParams, initialIsReady=t
 
     }, [url, isReady, csrfToken]);
 
-    return {state, setUrl, setRequestData, setParams, setIsReady, refresh};
+    return {state, setUrl, requestData, setRequestData, params, setParams, setIsReady, refresh};
 };
 
 export default useAPI
