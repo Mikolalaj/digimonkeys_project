@@ -12,7 +12,7 @@ import List from './List'
 import './Listing.scss'
 
 export default function Listing () {
-    const [, setRefreshVideos] = useRecoilState(videosState);
+    const [refreshVideos, setRefreshVideos] = useRecoilState(videosState);
 
     const pageLimit = 6;
     const [sorting, setSorting] = useState<'asc' | 'desc'>('desc');
@@ -22,7 +22,7 @@ export default function Listing () {
 
     const { state: stateInfo, refresh: refreshInfo } = useAPI('get', '/videos/info')
 
-    const { state: stateVideos, setParams: setParamsVideos, refresh: refreshVideos } = useAPI('get', '/videos/', [], {
+    const { state: stateVideos, setParams: setParamsVideos, refresh: refreshVideosData } = useAPI('get', '/videos/', [], {
         sort: sorting,
         limit: pageLimit,
         skip: 0,
@@ -38,7 +38,7 @@ export default function Listing () {
                 limit: pageLimit,
             });
             refreshInfo();
-            refreshVideos();
+            refreshVideosData();
             setCurrentPage(newPageNumber);
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,18 +58,8 @@ export default function Listing () {
 
     function refresh(newPageNumber=1) {
         refreshInfo();
-        refreshVideos();
+        refreshVideosData();
         setCurrentPage(newPageNumber);
-    }
-
-    function onChangePage(newPageNumber: number) {
-        setParamsVideos({
-            sort: sorting,
-            skip: (newPageNumber-1) * pageLimit,
-            liked: liked,
-            limit: pageLimit,
-        });
-        refresh(newPageNumber);
     }
 
     function onChangeSort(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -83,12 +73,12 @@ export default function Listing () {
         refresh();
     }
 
-    function onChangeLiked(e: React.ChangeEvent<HTMLInputElement>) {
-        setLiked(e.target.checked);
+    function onChangeLiked(event: React.ChangeEvent<HTMLInputElement>) {
+        setLiked(event.target.checked);
         setParamsVideos({
             sort: sorting,
             skip: 0,
-            liked: e.target.checked,
+            liked: event.target.checked,
             limit: pageLimit
         });
         refresh();
@@ -114,7 +104,7 @@ export default function Listing () {
                 <List dataVideos={stateVideos.data} />}
             </Row>
         </Container>
-        {stateVideos.data.length !== 0 && <Pagination onChangePage={onChangePage} page={currentPage} pageCount={pageCount} />}
+        {stateVideos.data.length !== 0 && <Pagination onChangePage={refreshVideos} page={currentPage} pageCount={pageCount} />}
     </div>
     );
 }
