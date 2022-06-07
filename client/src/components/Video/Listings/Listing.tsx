@@ -11,11 +11,18 @@ import Grid from './Grid'
 import List from './List'
 import './Listing.scss'
 
+type FetchVideosParams = {
+    sort: 'asc' | 'desc',
+    limit: number,
+    skip: number,
+    liked: boolean
+}
+
 export default function Listing () {
     const [refreshVideos, setRefreshVideos] = useRecoilState(videosState);
 
     const pageLimit = 6;
-    const [sorting, setSorting] = useState<'asc' | 'desc'>('desc');
+    // const [sorting, setSorting] = useState<'asc' | 'desc'>('desc');
     const [liked, setLiked] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [selectedListing, setSelectedListing] = useState<'list' | 'grid'>('grid');
@@ -26,7 +33,7 @@ export default function Listing () {
         url: '/videos',
         resultData: [],
         params: {
-            sort: sorting,
+            sort: 'desc',
             limit: pageLimit,
             skip: 0,
             liked: liked
@@ -36,10 +43,8 @@ export default function Listing () {
     useEffect(() => {
         setRefreshVideos(() => (newPageNumber=1) => {
             setParamsVideos({
-                sort: sorting,
-                skip: (newPageNumber-1) * pageLimit,
-                liked: liked,
-                limit: pageLimit,
+                ...paramsVideos,
+                skip: (newPageNumber-1) * pageLimit
             });
             refreshInfo();
             refreshVideosData();
@@ -67,12 +72,11 @@ export default function Listing () {
     }
 
     function onChangeSort(event: React.ChangeEvent<HTMLSelectElement>) {
-        setSorting(event.target.value as 'asc' | 'desc');
+        // setSorting(event.target.value as 'asc' | 'desc');
         setParamsVideos({
+            ...paramsVideos,
             sort: event.target.value,
-            skip: 0,
-            liked: liked,
-            limit: pageLimit
+            skip: 0
         });
         refresh();
     }
@@ -80,10 +84,9 @@ export default function Listing () {
     function onChangeLiked(event: React.ChangeEvent<HTMLInputElement>) {
         setLiked(event.target.checked);
         setParamsVideos({
-            sort: sorting,
-            skip: 0,
+            ...paramsVideos,
             liked: event.target.checked,
-            limit: pageLimit
+            skip: 0
         });
         refresh();
     }
@@ -92,7 +95,7 @@ export default function Listing () {
     <div className='video-listing'>
         <h3>Your saved videos</h3>
         <ListingFilters
-            sorting={sorting}
+            sorting={paramsVideos!.sorting}
             liked={liked}
             onChangeSort={onChangeSort}
             onChangeLiked={onChangeLiked}

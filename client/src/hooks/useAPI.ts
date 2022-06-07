@@ -57,8 +57,14 @@ type Initials = {
     url: string;
     requestData?: {};
     resultData?: {} | [];
-    params?: {};
+    params?: {
+        [key: string]: string | number | boolean | undefined;
+    };
     isReady?: boolean;
+}
+
+type Params = {
+    [key: string]: any;
 }
 
   
@@ -66,7 +72,7 @@ function useAPI( method: Method, initials: Initials) {
     const [csrfToken, setCsrfToken] = useState<string>('');
     const [url, setUrl] = useState<string>(initials.url);
     const [requestData, setRequestData] = useState<{} | undefined>(initials.requestData);
-    const [params, setParams] = useState<{} | undefined>(initials.params);
+    const [params, setParams] = useState<Params | undefined>(initials.params);
     const [isReady, setIsReady] = useState<boolean>(initials.isReady === undefined ? true : initials.isReady);
 
     const { logout } = useContext(AuthContext);
