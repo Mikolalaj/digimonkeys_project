@@ -20,13 +20,12 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-}
 
-.form h2 {
-    margin-bottom: 15px;
-}
+    .form-floating {
+        width: 100%;
+    }
 
-.form .form-floating {
-    width: 100%;
+    h2 {
+        margin-bottom: 15px;
+    }
 }
-

@@ -3,7 +3,7 @@ import { useContext, useMemo } from 'react';
 import Listing from '../components/Video/Listings/Listing';
 import LinkInput from '../components/Video/LinkInput';
 import { AuthContext } from '../context/AuthContext';
-import './Dashboard.css';
+import './Dashboard.scss';
 
 export default function Dashboard () {
     const { getFirstName } = useContext(AuthContext);

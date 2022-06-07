@@ -2,7 +2,7 @@ import { RecoilRoot } from 'recoil';
 import { AuthProvider } from './context/AuthContext';
 import { BrowserRouter } from 'react-router-dom';
 import MyRoutes from './MyRoutes';
-import './App.css';
+import './App.scss';
 
 
 function App() {    

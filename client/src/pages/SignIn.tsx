@@ -6,7 +6,7 @@ import SupportedApps from '../components/SupportedApps';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import './SignIn.css'
+import './SignIn.scss'
 
 export default function Login (): JSX.Element {
     const authContext = useContext(AuthContext);
