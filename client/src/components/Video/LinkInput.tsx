@@ -78,7 +78,6 @@ function LinkInput() {
 
     useEffect(() => {
         if (state.isSuccess) {
-            console.log(state.data)
             refreshVideos();
         }
         else if (state.isError) {
