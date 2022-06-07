@@ -11,19 +11,10 @@ import Grid from './Grid'
 import List from './List'
 import './Listing.scss'
 
-type FetchVideosParams = {
-    sort: 'asc' | 'desc',
-    limit: number,
-    skip: number,
-    liked: boolean
-}
-
 export default function Listing () {
     const [refreshVideos, setRefreshVideos] = useRecoilState(videosState);
 
     const pageLimit = 6;
-    // const [sorting, setSorting] = useState<'asc' | 'desc'>('desc');
-    const [liked, setLiked] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [selectedListing, setSelectedListing] = useState<'list' | 'grid'>('grid');
 
@@ -36,34 +27,9 @@ export default function Listing () {
             sort: 'desc',
             limit: pageLimit,
             skip: 0,
-            liked: liked
+            liked: false
         }
     });
-
-    useEffect(() => {
-        setRefreshVideos(() => (newPageNumber=1) => {
-            setParamsVideos({
-                ...paramsVideos,
-                skip: (newPageNumber-1) * pageLimit
-            });
-            refreshInfo();
-            refreshVideosData();
-            setCurrentPage(newPageNumber);
-        })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    const pageCount = useMemo(() => {
-        if (stateInfo.isSuccess) {
-            if (liked) {
-                return Math.ceil(stateInfo.data.countliked / pageLimit)
-            }
-            else {
-                return Math.ceil(stateInfo.data.count / pageLimit)
-            }
-        }
-        return 1;
-    }, [stateInfo, liked])
 
     function refresh(newPageNumber=1) {
         refreshInfo();
@@ -71,8 +37,30 @@ export default function Listing () {
         setCurrentPage(newPageNumber);
     }
 
+    useEffect(() => {
+        setRefreshVideos(() => (newPageNumber=1) => {
+            setParamsVideos({
+                ...paramsVideos,
+                skip: (newPageNumber-1) * pageLimit
+            });
+            refresh(newPageNumber);
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const pageCount = useMemo(() => {
+        if (stateInfo.isSuccess) {
+            if (paramsVideos!.liked) {
+                return Math.ceil(stateInfo.data.countliked / pageLimit)
+            }
+            else {
+                return Math.ceil(stateInfo.data.count / pageLimit)
+            }
+        }
+        return 1;
+    }, [stateInfo, paramsVideos!.liked])
+
     function onChangeSort(event: React.ChangeEvent<HTMLSelectElement>) {
-        // setSorting(event.target.value as 'asc' | 'desc');
         setParamsVideos({
             ...paramsVideos,
             sort: event.target.value,
@@ -82,7 +70,6 @@ export default function Listing () {
     }
 
     function onChangeLiked(event: React.ChangeEvent<HTMLInputElement>) {
-        setLiked(event.target.checked);
         setParamsVideos({
             ...paramsVideos,
             liked: event.target.checked,
@@ -96,7 +83,7 @@ export default function Listing () {
         <h3>Your saved videos</h3>
         <ListingFilters
             sorting={paramsVideos!.sorting}
-            liked={liked}
+            liked={paramsVideos!.liked}
             onChangeSort={onChangeSort}
             onChangeLiked={onChangeLiked}
             selectedListing={selectedListing}
@@ -104,7 +91,8 @@ export default function Listing () {
         />
         <Container >
         {stateVideos.isLoading && <div className='loading-wrapper'><NewtonsCradle size={55} color='var(--bs-teal)'/></div>}
-        {(stateVideos.isSuccess && stateVideos.data.length === 0) && <p className='no-data'>You don't have any saved {liked && 'favourited'} videos yet 🙁</p>}
+        {(stateVideos.isSuccess && stateVideos.data.length === 0) &&
+        <p className='no-data'>You don't have any saved {paramsVideos!.liked && 'favourited'} videos yet 🙁</p>}
             <Row className={(stateVideos.isLoading || stateVideos.data.length === 0) ? 'hidden' : ''} >
                 {selectedListing === 'grid' ?
                 <Grid dataVideos={stateVideos.data} /> :
