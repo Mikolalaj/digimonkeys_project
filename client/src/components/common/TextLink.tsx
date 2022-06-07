@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import './TextLink.css';
+import './TextLink.scss';
 
 export interface ITextLinkProps {
     href: string;

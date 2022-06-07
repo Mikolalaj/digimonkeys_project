@@ -3,16 +3,16 @@
     text-align: center;
     font-size: inherit;
     cursor: pointer;
-}
 
-.heart-button.liked {
-    animation: liked .4s ease;
-    color: var(--bs-primary) !important;
-}
+    &.liked {
+        animation: liked .4s ease;
+        color: var(--bs-primary) !important;
+    }
 
-.heart-button.unliked {
-    animation: unliked .3s ease;
-    color: inherit;
+    &.unliked {
+        animation: unliked .3s ease;
+        color: inherit;
+    }
 }
 
 @keyframes liked {

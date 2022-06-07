@@ -1,4 +1,4 @@
-import "./ErrorMessage.css";
+import "./ErrorMessage.scss";
 
 export interface IErrorMessageProps {
     message: string;

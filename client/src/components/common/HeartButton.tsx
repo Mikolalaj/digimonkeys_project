@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io';
-import './HeartButton.css';
+import './HeartButton.scss';
 
 export interface IHeartButtonProps {
     value: boolean;

@@ -1,5 +1,5 @@
 import videoApps from '../VideoApps';
-import './SupportedApps.css';
+import './SupportedApps.scss';
 
 export default function SupportedApps () {
 

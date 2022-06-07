@@ -1,0 +1,23 @@
+.error-message {
+    position: relative;
+    top: -13px;
+    color: #f44336;
+    margin-bottom: 0;
+
+    &.sm {
+        font-size: 13px;
+    }
+
+    &.md {
+        font-size: 19px;
+    }
+
+    &.lg {
+        font-size: 32px;
+    }
+
+    &:after {
+        content: '\200b';
+    }
+}
+
